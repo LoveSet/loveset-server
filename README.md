@@ -4,7 +4,7 @@
 - if not a valid js array of movies, try again. []
 
 - google += referral [done]
-- onboarding []
+- onboarding [done]
 - swiping: getting data + action (like,pass) []
 - detail []
 - watchlist: list, delete from watchlist []
