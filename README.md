@@ -3,7 +3,7 @@
 - System Prompt: Note how many times a user has liked something. [update]
 - if not a valid js array of movies, try again. []
 
-- google += referral []
+- google += referral [done]
 - onboarding []
 - swiping: getting data + action (like,pass) []
 - detail []

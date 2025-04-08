@@ -6,12 +6,22 @@ const generateNum = require("../utils/generateNum");
 const generateLetter = require("../utils/generateLetter");
 const moment = require("moment");
 const { Decimal128 } = require("mongodb");
+const generateRef = require("../utils/generateRef");
 
 const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
       trim: true,
+    },
+    username: {
+      type: String,
+      trim: true,
+      unique: true,
+      index: true,
+      default: function () {
+        return `${generateLetter()}${generateNum(9)}`;
+      },
     },
     email: {
       type: String,
@@ -26,9 +36,22 @@ const userSchema = mongoose.Schema(
         }
       },
     },
+    ref: {
+      type: String,
+      trim: true,
+      unique: true,
+      index: true,
+      default: function () {
+        return generateRef(6);
+      },
+    },
     country: {
       type: String,
       trim: true,
+    },
+    swipesUsed: {
+      type: Number,
+      default: 0,
     },
     paddleCustomerId: {
       type: String,
@@ -100,6 +123,15 @@ userSchema.pre("save", async function (next) {
       generatedUsername = `${generateLetter()}${generateNum(9)}`;
     }
     user.username = generatedUsername;
+  }
+
+  // ref
+  if (user.isNew && !user.ref) {
+    let generatedRef = generateRef(6);
+    while (await User.findOne({ ref: generatedRef })) {
+      generatedRef = generateRef(6);
+    }
+    user.ref = generatedRef;
   }
 
   next();

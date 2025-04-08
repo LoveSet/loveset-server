@@ -6,7 +6,9 @@ const { verifyGoogleToken } = require("../utils/social");
 
 const google = catchAsync(async (req, res) => {
   try {
-    const googleResponse = await verifyGoogleToken(req.body.code);
+    const { code, ref } = req.bod;
+
+    const googleResponse = await verifyGoogleToken(code);
     if (googleResponse == null) {
       return Responses.handleError(
         400,
@@ -37,10 +39,24 @@ const google = catchAsync(async (req, res) => {
       };
 
       if (user?.id) {
-        // todo: it's a new user, REDIRECT TO ONBOARDING
+        // it's a new user, REDIRECT TO ONBOARDING
+
+        // process referral
+        if (ref) {
+          const user = await userService.getUserByFilter({ ref });
+          if (user) {
+            await userService.updateUserByFilter(
+              { ref },
+              {
+                swipesUsed: user?.swipesUsed - 10,
+              }
+            );
+          }
+        }
+
         data.next = "/app/onboarding";
       } else {
-        // todo: NOT A NEW USER
+        // NOT A NEW USER
         data.next = "/app/discover";
       }
 
