@@ -5,6 +5,7 @@
 
 - google += referral [done]
 - onboarding [done]
+- Get User [done]
 - swiping: getting data + action (like,pass) []
 - detail []
 - watchlist: list, delete from watchlist []
