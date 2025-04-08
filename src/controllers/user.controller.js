@@ -1,12 +1,12 @@
 const catchAsync = require("../utils/catchAsync");
 const Responses = require("../utils/responses");
 const logger = require("../config/logger");
-const { preferenceService } = require("../services");
+const { userService } = require("../services");
 
 const onboarding = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
-    await preferenceService.updatePreferenceByFilter({ userId }, req.body);
+    await userService.updateByUserId({ _id: userId }, req.body);
     return Responses.handleSuccess(200, "success", res, {});
   } catch (error) {
     logger.error(error);

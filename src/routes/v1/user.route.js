@@ -6,7 +6,7 @@ const userValidation = require("../../validations/user.validation");
 
 const router = express.Router();
 
-router.get(
+router.patch(
   "/onboarding",
   auth(),
   validate(userValidation.onboarding),

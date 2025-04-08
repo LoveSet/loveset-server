@@ -49,6 +49,18 @@ const userSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
+    contentTypes: {
+      type: Array,
+    },
+    filmIndustries: {
+      type: Array,
+    },
+    genres: {
+      type: Array,
+    },
+    timePeriods: {
+      type: Array,
+    },
     swipesUsed: {
       type: Number,
       default: 0,
