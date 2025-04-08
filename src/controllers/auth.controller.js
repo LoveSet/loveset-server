@@ -6,7 +6,7 @@ const { verifyGoogleToken } = require("../utils/social");
 
 const google = catchAsync(async (req, res) => {
   try {
-    const { code, ref } = req.bod;
+    const { code, ref } = req.body;
 
     const googleResponse = await verifyGoogleToken(code);
     if (googleResponse == null) {
