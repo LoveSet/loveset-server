@@ -9,6 +9,16 @@ const onboarding = {
   }),
 };
 
+const getUser = {
+  params: Joi.object().keys({
+    username: Joi.string().required(),
+  }),
+  // query: Joi.object().keys({
+  //   token: Joi.string().optional(),
+  // }),
+};
+
 module.exports = {
   onboarding,
+  getUser,
 };

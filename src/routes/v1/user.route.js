@@ -13,4 +13,10 @@ router.patch(
   userController.onboarding
 );
 
+router.get(
+  "/:username",
+  validate(userValidation.getUser),
+  userController.getUser
+);
+
 module.exports = router;
