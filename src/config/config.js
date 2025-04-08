@@ -40,11 +40,11 @@ const envVarsSchema = Joi.object()
     PADDLE_LIVE_WEBHOOK_SECRET_KEY: Joi.string().description(
       "paddle live webhook secret key"
     ),
-    IMDB_READ_ACCESS_TOKEN: Joi.string().description(
-      "imdb read access token"
+    TMDB_READ_ACCESS_TOKEN: Joi.string().description(
+      "tmdb read access token"
     ),
-    IMDB_API_KEY: Joi.string().description(
-      "imdb api key"
+    TMDB_API_KEY: Joi.string().description(
+      "tmdb api key"
     ),
   })
   .unknown();
@@ -98,6 +98,6 @@ module.exports = {
   paddleLiveApiKey: envVars.PADDLE_LIVE_API_KEY,
   paddleTestWebhookSecretKey: envVars.PADDLE_TEST_WEBHOOK_SECRET_KEY,
   paddleLiveWebhookSecretKey: envVars.PADDLE_LIVE_WEBHOOK_SECRET_KEY,
-  imdbReadAccessToken: envVars.IMDB_READ_ACCESS_TOKEN,
-  imdbApiKey: envVars.IMDB_API_KEY
+  tmdbReadAccessToken: envVars.TMDB_READ_ACCESS_TOKEN,
+  tmdbApiKey: envVars.TMDB_API_KEY
 };
