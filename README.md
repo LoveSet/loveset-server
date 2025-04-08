@@ -8,7 +8,8 @@
 - swiping: getting data + action (like,pass) []
 - detail []
 - watchlist: list, delete from watchlist []
-- premium []
+- premium + webhook []
 - unsubscribe []
+- rate_limits []
 
 - create an email notification for payments on paddle []

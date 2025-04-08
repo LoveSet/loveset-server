@@ -15,7 +15,7 @@ mongoose
     server = app.listen(config.port, () => {
       logger.info(`Listening to port ${config.port}`);
     });
-    socketServer(server);
+    // socketServer(server);
   })
   .catch((error) => {
     logger.error("Error starting queues:", error);
