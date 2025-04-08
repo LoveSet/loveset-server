@@ -12,4 +12,4 @@
 - unsubscribe []
 - rate_limits []
 
-- create an email notification for payments on paddle []
+- create email notification for payments & cancelled subscriptions on paddle []
