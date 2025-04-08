@@ -6,7 +6,7 @@ const { verifyGoogleToken } = require("../utils/social");
 
 const google = catchAsync(async (req, res) => {
   try {
-    const { code, ref } = req.body;
+    const { code, ref, country } = req.body;
 
     const googleResponse = await verifyGoogleToken(code);
     if (googleResponse == null) {
@@ -21,6 +21,7 @@ const google = catchAsync(async (req, res) => {
           googleResponse?.family_name ? ` ${googleResponse?.family_name}` : ""
         }`,
         email: googleResponse?.email,
+        country,
       });
 
       // google is one-way authentication
