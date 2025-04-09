@@ -7,11 +7,21 @@ const getWatchlistByFilter = async (filter, options) => {
   return query.exec();
 };
 
+const getWatchlistByFilter2 = async (filter) => {
+  return await Watchlist.findOne(filter);
+};
+
 const getDocumentsCount = async (filter) => {
   return await Watchlist.countDocuments(filter);
 };
 
+const deleteFromWatchlist = async (filter) => {
+  return await Watchlist.deleteOne(filter);
+};
+
 module.exports = {
   getWatchlistByFilter,
+  getWatchlistByFilter2,
   getDocumentsCount,
+  deleteFromWatchlist,
 };

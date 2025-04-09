@@ -13,4 +13,11 @@ router.get(
   watchlistController.getWatchlist
 );
 
+router.delete(
+  "/:watchlistId",
+  auth(),
+  validate(watchlistValidation.deleteFromWatchlist),
+  watchlistController.deleteFromWatchlist
+);
+
 module.exports = router;
