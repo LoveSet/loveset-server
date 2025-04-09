@@ -18,6 +18,7 @@
   - getting data []
   - action (like,pass) []
 - detail []
+  - streaming availability []
 - watchlist: list, delete from watchlist []
 - premium + webhook + unsubscribe []
 - emails []
