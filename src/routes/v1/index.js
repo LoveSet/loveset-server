@@ -2,6 +2,7 @@ const express = require("express");
 const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
 const discoverRoute = require("./discover.route");
+const contentRoute = require("./content.route");
 
 const router = express.Router();
 
@@ -17,6 +18,10 @@ const defaultRoutes = [
   {
     path: "/discover",
     route: discoverRoute,
+  },
+  {
+    path: "/content",
+    route: contentRoute,
   },
 ];
 

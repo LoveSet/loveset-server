@@ -25,15 +25,23 @@ const getContent = catchAsync(async (req, res) => {
       return Responses.handleError(404, "Content not found", res);
     }
 
-    const data = { ...content };
+    const data = { ...content?.toJSON() };
 
     // Fetch streaming availability if user is premium and it's not already available
     if (user?.premium) {
-      if (!data?.streamingAvailability) {
-        const streamingData = await streamingAvailability("/search/title", {
-          country: "us",
-          title: content.title,
-        });
+      if (
+        !data?.streamingAvailability ||
+        data?.streamingAvailability?.length === 0
+      ) {
+        const streamingData = await streamingAvailability(
+          "/shows/search/title",
+          {
+            country: "us",
+            title: content.title,
+          }
+        );
+
+        console.log("streamingData", streamingData);
 
         if (Array.isArray(streamingData) && streamingData.length > 0) {
           const firstItem = streamingData[0];
