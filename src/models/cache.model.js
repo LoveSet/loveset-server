@@ -10,15 +10,11 @@ const cacheSchema = mongoose.Schema(
       required: true,
       index: true,
     },
-    swiped: {
+    liked: {
       type: Boolean,
       default: false,
     },
-    like: {
-      type: Boolean,
-      default: false,
-    },
-    pass: {
+    passed: {
       type: Boolean,
       default: false,
     },

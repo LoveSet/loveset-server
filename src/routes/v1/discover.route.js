@@ -5,6 +5,6 @@ const discoverController = require("../../controllers/discover.controller");
 
 const router = express.Router();
 
-router.get("/", discoverController.getFeed);
+router.get("/", auth(), discoverController.getContent);
 
 module.exports = router;

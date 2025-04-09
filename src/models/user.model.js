@@ -65,6 +65,13 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    contentLiked: {
+      // ["Inception (2010)"]
+      type: Array,
+    },
+    contentPassed: {
+      type: Array,
+    },
     paddleCustomerId: {
       type: String,
     },

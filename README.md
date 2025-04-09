@@ -7,8 +7,7 @@
 - If the query is too narrow, focus on specific preferences. []
 - Never be strict with preferences. []
 - Keep things in a loop where necessary. []
-- 👑The very first query should focus on movies or series that the user has probably not heard in his preferences, sprinkled with little popular / new ones i.e. the first 10. []
-- Keep a regular summary of what a user’s taste is. []
+- Have a sense of what the user's taste is too []
 - 📌fetch onboarding with the 3rd question []
 
 - google += referral [done]
