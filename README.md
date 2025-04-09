@@ -15,7 +15,7 @@
 - Get User [done]
 - swiping:
   - models: watchlist [done]
-  - getting data [done] + account for errors --> if data is incomplete, remove item, try...catch tmdb []
+  - getting data [done] + account for errors --> if data is incomplete, remove item, try...catch tmdb [done] + getCache [done]
   - action (like,pass) []
 - detail []
   - streaming availability []
