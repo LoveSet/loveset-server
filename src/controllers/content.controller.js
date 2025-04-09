@@ -18,34 +18,39 @@ const getContent = catchAsync(async (req, res) => {
       return Responses.handleError(404, "Content not found", res);
     }
 
-    const data = { ...content.toJSON() };
+    const data = { ...content };
 
     // Fetch streaming availability if user is premium and it's not already available
-    if (user?.premium && !data?.streamingAvailability) {
-      const streamingData = await streamingAvailability("/search/title", {
-        country: "us",
-        title: content.title,
-      });
+    if (user?.premium) {
+      if (!data?.streamingAvailability) {
+        const streamingData = await streamingAvailability("/search/title", {
+          country: "us",
+          title: content.title,
+        });
 
-      if (Array.isArray(streamingData) && streamingData.length > 0) {
-        const firstItem = streamingData[0];
-        const streamingOptions = firstItem?.streamingOptions?.us || [];
+        if (Array.isArray(streamingData) && streamingData.length > 0) {
+          const firstItem = streamingData[0];
+          const streamingOptions = firstItem?.streamingOptions?.us || [];
 
-        // Extract name and link for each streaming service
-        const availability = streamingOptions.map((option) => ({
-          name: option.service.name,
-          link: option.link,
-        }));
+          // Extract name and link for each streaming service
+          const availability = streamingOptions.map((option) => ({
+            name: option.service.name,
+            link: option.link,
+          }));
 
-        // Update content with streaming availability
-        data.streamingAvailability = availability;
+          // Update content with streaming availability
+          data.streamingAvailability = availability;
 
-        // Optionally, save the updated streaming availability to the database
-        await contentService.updateContentByFilter(
-          { slug },
-          { streamingAvailability: availability }
-        );
+          // Optionally, save the updated streaming availability to the database
+          await contentService.updateContentByFilter(
+            { slug },
+            { streamingAvailability: availability }
+          );
+        }
       }
+    } else {
+      // Remove streamingAvailability if the user is not premium
+      delete data.streamingAvailability;
     }
 
     return Responses.handleSuccess(
