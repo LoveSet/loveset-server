@@ -50,7 +50,7 @@ FOCUS:
 - Prioritize user satisfaction over speed alone.
 - Always prefer **quality, diversity, and freshness** over convenience.
 - Slightly favor content that is similar in theme, genre, or tone to what the user has previously liked — but do not overly rely on this.
-- Include 1 or 2 popular, trending, or recent titles if they are a good fit — but keep the majority of results unique, varied, or lesser-known.
+- Include 1 popular, trending, or recent titles if they are a good fit — but keep the majority of results unique, varied, or lesser-known.
 - Avoid showing any content the user has already liked or passed.
 - Ensure results span **different content types** (movies, TV shows, documentaries, animation, anime, short films) based on the user's preferences.
 - If the user's profile is too narrow, use the **closest available match** to maintain variety and engagement.
@@ -102,7 +102,7 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
         const trailerUrl = getYouTubeTrailerUrl(item.title, item.year);
 
         // Determine if it's a movie or TV show based on duration
-        const isMovie = !item.duration.includes("season");
+        let isMovie = !item.duration.includes("season");
 
         // Fetch additional data from TMDB
         let tmdbData;
@@ -135,6 +135,35 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
           });
         }
 
+        // Check if we got results
+        if (!tmdbData.results || tmdbData.results.length === 0) {
+          // If no results from first guess, try the other type
+          if (isMovie) {
+            tmdbData = await tmdb("/3/search/tv", {
+              include_adult: "false",
+              language: "en-US",
+              page: "1",
+              query: item.title,
+            });
+            // Update isMovie flag if we found TV results
+            if (tmdbData.results && tmdbData.results.length > 0) {
+              isMovie = false;
+            }
+          } else {
+            tmdbData = await tmdb("/3/search/movie", {
+              query: item.title,
+              include_adult: "false",
+              language: "en-US",
+              page: "1",
+              year: item.year,
+            });
+            // Update isMovie flag if we found movie results
+            if (tmdbData.results && tmdbData.results.length > 0) {
+              isMovie = true;
+            }
+          }
+        }
+
         // Extract relevant TMDB data if results exist
         let genreIds = [];
         let posterUrl = "";
@@ -158,32 +187,38 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
               .filter((g) => genreIds.includes(g.id))
               .map((g) => g.name);
 
-        // Create content object
-        const contentData = {
-          title: item.title,
-          year: item.year,
-          posterUrl: posterUrl,
-          director: item.director,
-          trailerUrl: trailerUrl,
-          duration: item.duration,
-          genres: genreList,
-          synopsis: synopsis,
-          cast: item.cast || [],
-        };
+        if (posterUrl) {
+          // Create content object
+          const contentData = {
+            title: item.title,
+            year: item.year,
+            posterUrl: posterUrl,
+            director: item.director,
+            trailerUrl: trailerUrl,
+            duration: item.duration,
+            genres: genreList,
+            synopsis: synopsis,
+            cast: item.cast || [],
+          };
 
-        // Store in content model
-        existingContent = await contentService.createContent(contentData);
+          // Store in content model
+          existingContent = await contentService.createContent(contentData);
+        }
       }
 
-      // Create cache entry for this content
-      await cacheService.createCache({
-        userId,
-        contentId: existingContent._id,
-        liked: false,
-        passed: false,
-      });
+      if (existingContent) {
+        // Create cache entry for this content
+        await cacheService.createCache({
+          userId,
+          contentId: existingContent._id,
+          liked: false,
+          passed: false,
+        });
 
-      return existingContent;
+        return existingContent;
+      } else {
+        return null;
+      }
     });
 
     // Wait for all content to be processed

@@ -36,17 +36,20 @@ function tmdb(endpoint, queryParams = {}) {
             const body = Buffer.concat(chunks).toString();
             resolve(JSON.parse(body));
           } catch (e) {
+            logger.error(e);
             reject(new Error(`Failed to parse response: ${e.message}`));
           }
         });
       });
 
       req.on("error", (error) => {
+        logger.error(error);
         reject(new Error(`Request failed: ${error.message}`));
       });
 
       req.end();
     } catch (error) {
+      logger.error(error);
       reject(new Error(`Unexpected error: ${error.message}`));
     }
   });
