@@ -10,21 +10,23 @@ const getContent = catchAsync(async (req, res) => {
 
     // Fetch user data
     const user = await userService.getByUserId(userId);
-    if (!user) {
-      return Responses.handleError(404, "User not found", res);
-    }
-
     // Fetch content by slug
     const content = await contentService.getContentByFilter({ slug });
     if (!content) {
       return Responses.handleError(404, "Content not found", res);
     }
 
+    const data = { ...content };
+    if (user?.premium) {
+      // get streaming availability
+      // may use location
+    }
+
     return Responses.handleSuccess(
       200,
       "Content retrieved successfully",
       res,
-      content
+      data
     );
   } catch (error) {
     logger.error(error);
