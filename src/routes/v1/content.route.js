@@ -11,4 +11,10 @@ router.get(
   contentController.getContent
 );
 
+router.get(
+  "/:slug/streaming",
+  validate(contentValidation.getContent),
+  contentController.getStreamingAvailability
+);
+
 module.exports = router;

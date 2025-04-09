@@ -90,7 +90,7 @@ RESPONSE FORMAT:
 Return a valid JavaScript array of 6 content objects with:
 - title
 - year
-- director
+- director (use creator if director is unavailable)
 - duration (e.g. "148 min" or "12 seasons")
 - cast (3 well-known names)
 
