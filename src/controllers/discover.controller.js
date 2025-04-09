@@ -54,6 +54,7 @@ const getContent = catchAsync(async (req, res) => {
     const filmIndustries = user?.filmIndustries?.join(",");
     const genres = user?.genres?.join(",");
     const timePeriods = user?.timePeriods?.join(",");
+    const contentCached = user?.contentCached?.join(",");
     const contentLiked = user?.contentLiked?.join(",") || "";
     const contentPassed = user?.contentPassed?.join(",") || "";
 
@@ -69,7 +70,8 @@ FOCUS:
 - Always prefer **quality, diversity, and freshness** over convenience.
 - Slightly favor content that is similar in theme, genre, or tone to what the user has previously liked — but do not overly rely on this.
 - Include 1 popular, trending, or recent titles if they are a good fit — but keep the majority of results unique, varied, or lesser-known.
-- Avoid showing any content the user has already liked or passed.
+- Avoid showing any content the user has already cached, liked or passed.
+- Rarely reuse liked/passed content if list is hard to fill — for nostalgia or hidden gems, never overdo it.
 - Ensure results span **different content types** (movies, TV shows, documentaries, animation, anime, short films) based on the user's preferences.
 - If the user's profile is too narrow, use the **closest available match** to maintain variety and engagement.
 - Pull content from **reliable and varied sources**. Do not simply grab the first result found.
@@ -80,6 +82,7 @@ USER PROFILE:
 - Film Industries: ${filmIndustries || "N/A"}
 - Genres: ${genres || "N/A"}
 - Time Periods: ${timePeriods || "N/A"}
+- Cached Content: ${contentCached || "N/A"}
 - Liked Content: ${contentLiked || "N/A"}
 - Passed Content: ${contentPassed || "N/A"}
 
@@ -225,6 +228,14 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
       }
 
       if (existingContent) {
+        // add content to contentCached in user model
+        await userService.updateUserByFilter(
+          { _id: userId },
+          {
+            $addToSet: { contentCached: existingContent.title },
+          }
+        );
+
         // Create cache entry for this content
         await cacheService.createCache({
           userId,
@@ -275,9 +286,12 @@ const like = catchAsync(async (req, res) => {
     // Add the content to the user's liked list
     const content = await contentService.getContentByFilter({ _id: contentId });
     if (content) {
-      await userService.updateByUserId(userId, {
-        $push: { contentLiked: `${content.title}(${content.year})` },
-      });
+      await userService.updateUserByFilter(
+        { _id: userId },
+        {
+          $push: { contentLiked: `${content.title} (${content.year})` },
+        }
+      );
 
       // Add the content to the user's watchlist
       await watchlistService.addToWatchlist({
@@ -320,9 +334,12 @@ const pass = catchAsync(async (req, res) => {
     // Add the content to the user's passed list
     const content = await contentService.getContentByFilter({ _id: contentId });
     if (content) {
-      await userService.updateByUserId(userId, {
-        $push: { contentPassed: `${content.title}(${content.year})` },
-      });
+      await userService.updateUserByFilter(
+        { _id: userId },
+        {
+          $push: { contentPassed: `${content.title} (${content.year})` },
+        }
+      );
     }
 
     return Responses.handleSuccess(200, "Content marked as passed", res, {});
