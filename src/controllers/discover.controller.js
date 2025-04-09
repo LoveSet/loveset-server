@@ -72,8 +72,8 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
 
     logger.info(clean);
 
-    // youtube trailer
-    // tmdb data
+    // populate with youtube trailer
+    // popuate tmdb data
 
     // todo: add to cache
     // todo: return data
