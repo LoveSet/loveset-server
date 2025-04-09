@@ -34,38 +34,51 @@ const getContent = catchAsync(async (req, res) => {
         data?.streamingAvailability?.length === 0
       ) {
         const streamingData = await streamingAvailability(
-          "shows/search/title",
+          "/shows/search/title",
           {
             country: "us",
             title: content.title,
           }
         );
 
+        console.log("streamingData", streamingData);
+
         if (Array.isArray(streamingData) && streamingData.length > 0) {
           const firstItem = streamingData[0];
           const streamingOptions = firstItem?.streamingOptions?.us || [];
 
-          // Extract unique name and link for each streaming service
-          const availability = [];
-          const seenNames = new Set();
+          // Extract name and link for each streaming service
+          const availability = streamingOptions.map((option) => ({
+            name: option.service.name,
+            link: option.link,
+          }));
 
-          streamingOptions.forEach((option) => {
-            if (!seenNames.has(option.service.name)) {
-              availability.push({
-                name: option.service.name,
-                link: option.link,
-              });
-              seenNames.add(option.service.name);
-            }
-          });
+          const processedAvailability = [...availability].reduce(
+            (unique, current) => {
+              // Check if we already have an entry with this name
+              const existingEntry = unique.find(
+                (item) => item.name === current.name
+              );
+
+              // If no existing entry with this name, add it to our unique array
+              if (!existingEntry) {
+                unique.push(current);
+              }
+
+              return unique;
+            },
+            []
+          );
+
+          // Result:
 
           // Update content with streaming availability
-          data.streamingAvailability = availability;
+          data.streamingAvailability = processedAvailability;
 
           // Optionally, save the updated streaming availability to the database
           await contentService.updateContentByFilter(
             { slug },
-            { streamingAvailability: availability }
+            { streamingAvailability: processedAvailability }
           );
         }
       }
