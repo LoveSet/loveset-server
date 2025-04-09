@@ -3,6 +3,7 @@ const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
 const discoverRoute = require("./discover.route");
 const contentRoute = require("./content.route");
+const watchlistRoute = require("./watchlist.route");
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const defaultRoutes = [
   {
     path: "/content",
     route: contentRoute,
+  },
+  {
+    path: "/watchlist",
+    route: watchlistRoute,
   },
 ];
 
