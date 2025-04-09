@@ -113,6 +113,12 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
             language: "en-US",
             page: "1",
             year: item.year,
+          }).catch((err) => {
+            return Responses.handleError(
+              500,
+              "An error occurred. Please try again.",
+              res
+            );
           });
         } else {
           tmdbData = await tmdb("/3/search/tv", {
@@ -120,6 +126,12 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
             language: "en-US",
             page: "1",
             query: item.title,
+          }).catch((err) => {
+            return Responses.handleError(
+              500,
+              "An error occurred. Please try again.",
+              res
+            );
           });
         }
 
