@@ -4,6 +4,12 @@ const { toJSON } = require("./plugins");
 
 const cacheSchema = mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
     contentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Content",

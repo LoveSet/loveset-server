@@ -2,10 +2,12 @@ const catchAsync = require("../utils/catchAsync");
 const Responses = require("../utils/responses");
 const logger = require("../config/logger");
 const { Cache } = require("../models");
-const { userService } = require("../services");
+const { userService, contentService, cacheService } = require("../services");
 const { webSearch } = require("../utils/openaiHelper");
 const bing = require("../utils/bing");
 const getYouTubeTrailerUrl = require("../utils/getYoutubeTrailer");
+const tmdb = require("../utils/tmdb");
+const { movieGenres, tvShowGenres } = require("../utils/tmdbGenres");
 
 // onboarding ==> get new feed + cache
 // swiping(2) ===> get new feed + cache
@@ -26,7 +28,7 @@ const getContent = catchAsync(async (req, res) => {
 
     // Check if there's content in cache that user hasn't interacted with
     const uninteractedContent = await Cache.find({
-      userId: userId,
+      userId,
       liked: false,
       passed: false,
     }).populate("contentId");
@@ -163,6 +165,7 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
 
       // Create cache entry for this content
       await cacheService.createCache({
+        userId,
         contentId: existingContent._id,
         liked: false,
         passed: false,
