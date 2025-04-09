@@ -35,5 +35,5 @@ const preferenceSchema = mongoose.Schema(
 preferenceSchema.plugin(toJSON);
 preferenceSchema.plugin(paginate);
 
-const preference = mongoose.model("Preference", preferenceSchema);
-module.exports = preference;
+const Preference = mongoose.model("Preference", preferenceSchema);
+module.exports = Preference;

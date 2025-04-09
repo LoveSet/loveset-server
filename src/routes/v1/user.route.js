@@ -15,6 +15,7 @@ router.patch(
 
 router.get(
   "/:username",
+  auth(),
   validate(userValidation.getUser),
   userController.getUser
 );
