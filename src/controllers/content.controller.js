@@ -7,10 +7,17 @@ const streamingAvailability = require("../utils/streamingAvailability");
 const getContent = catchAsync(async (req, res) => {
   try {
     const { slug } = req.params;
-    const userId = req.user.id;
+    const { userId } = req.query;
 
-    // Fetch user data
-    const user = await userService.getByUserId(userId);
+    let user = null;
+
+    // Fetch user data if userId is provided
+    if (userId) {
+      user = await userService.getByUserId(userId);
+      if (!user) {
+        return Responses.handleError(404, "User not found", res);
+      }
+    }
 
     // Fetch content by slug
     const content = await contentService.getContentByFilter({ slug });
@@ -49,7 +56,7 @@ const getContent = catchAsync(async (req, res) => {
         }
       }
     } else {
-      // Remove streamingAvailability if the user is not premium
+      // Remove streamingAvailability if the user is not premium or userId is not provided
       delete data.streamingAvailability;
     }
 
