@@ -1,6 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const Responses = require("../utils/responses");
 const logger = require("../config/logger");
+const { Cache } = require("../models");
 const { userService } = require("../services");
 const { webSearch } = require("../utils/openaiHelper");
 const bing = require("../utils/bing");
@@ -20,12 +21,23 @@ const getContent = catchAsync(async (req, res) => {
     const filmIndustries = user?.filmIndustries?.join(",");
     const genres = user?.genres?.join(",");
     const timePeriods = user?.timePeriods?.join(",");
-    const contentLiked = user?.contentLiked.join(",");
-    const contentPassed = user?.contentPassed.join(",");
+    const contentLiked = user?.contentLiked?.join(",") || "";
+    const contentPassed = user?.contentPassed?.join(",") || "";
 
-    // todo: if cache, return cache
-    // todo: else: get data
+    // Check if there's content in cache that user hasn't interacted with
+    const uninteractedContent = await Cache.find({
+      userId: userId,
+      liked: false,
+      passed: false,
+    }).populate("contentId");
 
+    // If we have uninteracted content in cache, return it
+    if (uninteractedContent && uninteractedContent.length > 0) {
+      const contentResults = uninteractedContent.map((item) => item.contentId);
+      return Responses.handleSuccess(200, "success", res, contentResults);
+    }
+
+    // Otherwise, generate new content
     let input = `
 You are a fast, intelligent recommendation agent for movies and related content.
 
@@ -74,22 +86,96 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
 
     let parsedData = JSON.parse(data);
 
-    // youtube trailer
-    parsedData = parsedData.map((item) => {
-      // ==> if available in `Content`, return, else
+    // Process each content item
+    const contentPromises = parsedData.map(async (item) => {
+      // Check if content already exists in database
+      let existingContent = await contentService.getContentByFilter({
+        title: item.title,
+        year: item.year,
+      });
 
-      const trailerUrl = getYouTubeTrailerUrl(item.title, item.year);
-      return { ...item, trailerUrl }; // Add trailer URL to the item
+      // If content already exists, use it, otherwise create new content
+      if (!existingContent) {
+        // Get trailer URL from YouTube
+        const trailerUrl = getYouTubeTrailerUrl(item.title, item.year);
 
-      // todo: populate with tmdb data (if min. in duration => movie, else series)
+        // Determine if it's a movie or TV show based on duration
+        const isMovie = !item.duration.includes("season");
 
-      // todo: store each movie in `content` model
+        // Fetch additional data from TMDB
+        let tmdbData;
+        if (isMovie) {
+          tmdbData = await tmdb("/3/search/movie", {
+            query: item.title,
+            include_adult: "false",
+            language: "en-US",
+            page: "1",
+            year: item.year,
+          });
+        } else {
+          tmdbData = await tmdb("/3/search/tv", {
+            include_adult: "false",
+            language: "en-US",
+            page: "1",
+            query: item.title,
+          });
+        }
+
+        // Extract relevant TMDB data if results exist
+        let genreIds = [];
+        let posterUrl = "";
+        let synopsis = "";
+
+        if (tmdbData.results && tmdbData.results.length > 0) {
+          const result = tmdbData.results[0];
+          genreIds = result.genre_ids || [];
+          posterUrl = result.poster_path
+            ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
+            : "";
+          synopsis = result.overview || "";
+        }
+
+        // Map genre IDs to genre names
+        const genreList = isMovie
+          ? movieGenres
+              .filter((g) => genreIds.includes(g.id))
+              .map((g) => g.name)
+          : tvShowGenres.genres
+              .filter((g) => genreIds.includes(g.id))
+              .map((g) => g.name);
+
+        // Create content object
+        const contentData = {
+          title: item.title,
+          year: item.year,
+          posterUrl: posterUrl,
+          director: item.director,
+          trailerUrl: trailerUrl,
+          duration: item.duration,
+          genres: genreList,
+          synopsis: synopsis,
+          cast: item.cast || [],
+        };
+
+        // Store in content model
+        existingContent = await contentService.createContent(contentData);
+      }
+
+      // Create cache entry for this content
+      await cacheService.createCache({
+        contentId: existingContent._id,
+        liked: false,
+        passed: false,
+      });
+
+      return existingContent;
     });
 
-    // todo: add to cache
-    // todo: return data
+    // Wait for all content to be processed
+    const contentResults = await Promise.all(contentPromises);
 
-    return Responses.handleSuccess(200, "success", res, {});
+    // Return the processed content
+    return Responses.handleSuccess(200, "success", res, contentResults);
   } catch (error) {
     logger.error(error);
     return Responses.handleError(

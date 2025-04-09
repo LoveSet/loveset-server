@@ -18,6 +18,12 @@ const cacheSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    unixTimestamp: {
+      type: Number,
+      default: function () {
+        return moment().unix();
+      },
+    },
   },
   { timestamps: true }
 );

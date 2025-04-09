@@ -15,7 +15,7 @@
 - Get User [done]
 - swiping:
   - models: watchlist [done]
-  - getting data []
+  - getting data [done]
   - action (like,pass) []
 - detail []
   - streaming availability []
