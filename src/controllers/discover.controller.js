@@ -69,13 +69,14 @@ Quickly generate 6 engaging and fresh content suggestions that match this user's
 
 FOCUS:
 - Prioritize user satisfaction over speed alone.
-- Always prefer **quality and variety** over simply picking from the first website or source.
+- Always prefer **quality, diversity, and freshness** over convenience.
+- Slightly favor content that is similar in theme, genre, or tone to what the user has previously liked — but do not overly rely on this.
+- Include 1 or 2 popular, trending, or recent titles if they are a good fit — but keep the majority of results unique, varied, or lesser-known.
 - Avoid showing any content the user has already liked or passed.
-- The results must span **different content types** (movies, TV shows, documentaries, animation, anime, short films) — based specifically on what the user prefers.
-- Do not include anything the user has already liked or passed.
-- If the preferences are too narrow, pick based on the closest available matches.
-- Pull content from reliable and diverse sources. Do not rely on just the first result you find.
-- Be flexible. Use the user’s preferences as guidance, not strict rules.
+- Ensure results span **different content types** (movies, TV shows, documentaries, animation, anime, short films) based on the user's preferences.
+- If the user's profile is too narrow, use the **closest available match** to maintain variety and engagement.
+- Pull content from **reliable and varied sources**. Do not simply grab the first result found.
+- Be flexible. Use the user's profile as **inspiration**, not a strict filter.
 
 USER PROFILE:
 - Content Types: ${contentTypes || "N/A"}
