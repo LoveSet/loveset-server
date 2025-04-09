@@ -92,7 +92,6 @@ Return a valid JavaScript array of 6 content objects with:
 - director
 - duration (e.g. "148 min" or "12 seasons")
 - cast (3 well-known names)
-- trailerUrl (preferably YouTube)
 
 Do not include anything else but the array. Avoid repetition. Keep it diverse and satisfying.
 `;
