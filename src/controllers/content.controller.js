@@ -19,7 +19,7 @@ const getContent = catchAsync(async (req, res) => {
     const data = { ...content };
     if (user?.premium) {
       // get streaming availability
-      // may use location
+      // may use country
     }
 
     return Responses.handleSuccess(
