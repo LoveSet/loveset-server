@@ -43,6 +43,9 @@ const envVarsSchema = Joi.object()
     ),
     TMDB_READ_ACCESS_TOKEN: Joi.string().description("tmdb read access token"),
     TMDB_API_KEY: Joi.string().description("tmdb api key"),
+    RAPID_API_KEY: Joi.string()
+      .required()
+      .description("Rapid API key for streaming availability"),
   })
   .unknown();
 
@@ -98,4 +101,5 @@ module.exports = {
   paddleLiveWebhookSecretKey: envVars.PADDLE_LIVE_WEBHOOK_SECRET_KEY,
   tmdbReadAccessToken: envVars.TMDB_READ_ACCESS_TOKEN,
   tmdbApiKey: envVars.TMDB_API_KEY,
+  rapidApiKey: envVars.RAPID_API_KEY,
 };

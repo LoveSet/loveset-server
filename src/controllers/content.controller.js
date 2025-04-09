@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 const Responses = require("../utils/responses");
 const logger = require("../config/logger");
 const { contentService, userService } = require("../services");
+const streamingAvailability = require("../utils/streamingAvailability");
 
 const getContent = catchAsync(async (req, res) => {
   try {
@@ -10,16 +11,41 @@ const getContent = catchAsync(async (req, res) => {
 
     // Fetch user data
     const user = await userService.getByUserId(userId);
+
     // Fetch content by slug
     const content = await contentService.getContentByFilter({ slug });
     if (!content) {
       return Responses.handleError(404, "Content not found", res);
     }
 
-    const data = { ...content };
-    if (user?.premium) {
-      // get streaming availability
-      // may use country
+    const data = { ...content.toJSON() };
+
+    // Fetch streaming availability if user is premium and it's not already available
+    if (user?.premium && !data?.streamingAvailability) {
+      const streamingData = await streamingAvailability("/search/title", {
+        country: "us",
+        title: content.title,
+      });
+
+      if (Array.isArray(streamingData) && streamingData.length > 0) {
+        const firstItem = streamingData[0];
+        const streamingOptions = firstItem?.streamingOptions?.us || [];
+
+        // Extract name and link for each streaming service
+        const availability = streamingOptions.map((option) => ({
+          name: option.service.name,
+          link: option.link,
+        }));
+
+        // Update content with streaming availability
+        data.streamingAvailability = availability;
+
+        // Optionally, save the updated streaming availability to the database
+        await contentService.updateContentByFilter(
+          { slug },
+          { streamingAvailability: availability }
+        );
+      }
     }
 
     return Responses.handleSuccess(
