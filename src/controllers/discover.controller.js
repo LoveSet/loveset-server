@@ -4,7 +4,6 @@ const logger = require("../config/logger");
 const { Cache } = require("../models");
 const { userService, contentService, cacheService } = require("../services");
 const { webSearch } = require("../utils/openaiHelper");
-const bing = require("../utils/bing");
 const getYouTubeTrailerUrl = require("../utils/getYoutubeTrailer");
 const tmdb = require("../utils/tmdb");
 const { movieGenres, tvShowGenres } = require("../utils/tmdbGenres");
@@ -45,6 +44,13 @@ const getContent = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await userService.getByUserId(userId);
+
+    const contentTypes = user?.contentTypes.join(",");
+    const filmIndustries = user?.filmIndustries?.join(",");
+    const genres = user?.genres?.join(",");
+    const timePeriods = user?.timePeriods?.join(",");
+    const contentLiked = user?.contentLiked?.join(",") || "";
+    const contentPassed = user?.contentPassed?.join(",") || "";
 
     // Otherwise, generate new content
     let input = `
