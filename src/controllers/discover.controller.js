@@ -9,35 +9,42 @@ const getYouTubeTrailerUrl = require("../utils/getYoutubeTrailer");
 const tmdb = require("../utils/tmdb");
 const { movieGenres, tvShowGenres } = require("../utils/tmdbGenres");
 
-// onboarding ==> get new feed + cache
-// swiping(2) ===> get new feed + cache
+// onboarding ==> get new feed
+// swiping(2) ===> get new feed
 // refresh ==> get cache
 
-const getContent = catchAsync(async (req, res) => {
+const getCache = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const user = await userService.getByUserId(userId);
-
-    const contentTypes = user?.contentTypes.join(",");
-    const filmIndustries = user?.filmIndustries?.join(",");
-    const genres = user?.genres?.join(",");
-    const timePeriods = user?.timePeriods?.join(",");
-    const contentLiked = user?.contentLiked?.join(",") || "";
-    const contentPassed = user?.contentPassed?.join(",") || "";
-
-    // Check if there's content in cache that user hasn't interacted with
+    // Get uninteracted content from cache
     const uninteractedContent = await Cache.find({
       userId,
       liked: false,
       passed: false,
     }).populate("contentId");
 
-    // If we have uninteracted content in cache, return it
     if (uninteractedContent && uninteractedContent.length > 0) {
       const contentResults = uninteractedContent.map((item) => item.contentId);
       return Responses.handleSuccess(200, "success", res, contentResults);
     }
+
+    // If no cached content, return empty array
+    return Responses.handleSuccess(200, "No cached content available", res, []);
+  } catch (error) {
+    logger.error(error);
+    return Responses.handleError(
+      500,
+      "An error occurred. Please try again.",
+      res
+    );
+  }
+});
+
+const getContent = catchAsync(async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await userService.getByUserId(userId);
 
     // Otherwise, generate new content
     let input = `
@@ -225,7 +232,10 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
     const contentResults = await Promise.all(contentPromises);
 
     // Return the processed content
-    return Responses.handleSuccess(200, "success", res, contentResults);
+    const filteredContentResults = contentResults.filter(
+      (item) => item !== null
+    );
+    return Responses.handleSuccess(200, "success", res, filteredContentResults);
   } catch (error) {
     logger.error(error);
     return Responses.handleError(
@@ -237,5 +247,6 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
 });
 
 module.exports = {
+  getCache,
   getContent,
 };
