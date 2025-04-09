@@ -41,7 +41,8 @@ const webSearch = async ({
   };
 
   const response = await openai.responses.create(query);
-  response.output_text;
+  console.log(response);
+  return response.output_text;
 };
 
 module.exports = {
