@@ -18,6 +18,7 @@ const envVarsSchema = Joi.object()
     S3_BUCKET_NAME: Joi.string().description("s3 bucket name"),
     AWS_REGION: Joi.string().description("aws region"),
     OPENAI_SECRET: Joi.string().description("open ai secret"),
+    BING_SEARCH_KEY: Joi.string().description("bing search key"),
     FILES_URL: Joi.string().description("files url"),
     EMAIL_FROM: Joi.string().description(
       "the from field in the emails sent by the app"
@@ -40,12 +41,8 @@ const envVarsSchema = Joi.object()
     PADDLE_LIVE_WEBHOOK_SECRET_KEY: Joi.string().description(
       "paddle live webhook secret key"
     ),
-    TMDB_READ_ACCESS_TOKEN: Joi.string().description(
-      "tmdb read access token"
-    ),
-    TMDB_API_KEY: Joi.string().description(
-      "tmdb api key"
-    ),
+    TMDB_READ_ACCESS_TOKEN: Joi.string().description("tmdb read access token"),
+    TMDB_API_KEY: Joi.string().description("tmdb api key"),
   })
   .unknown();
 
@@ -76,11 +73,12 @@ module.exports = {
   },
   clientUrl: {
     dev: envVars.DEV_CLIENT_URL,
-    prod: envVars.PROD_CLIENT_URL
+    prod: envVars.PROD_CLIENT_URL,
   },
   S3_BUCKET_NAME: envVars.S3_BUCKET_NAME,
   AWS_REGION: envVars.AWS_REGION,
   openAISecret: envVars.OPENAI_SECRET,
+  bingSearchKey: envVars.BING_SEARCH_KEY,
   filesUrl: envVars.FILES_URL,
   from: envVars.EMAIL_FROM,
   email: {
@@ -99,5 +97,5 @@ module.exports = {
   paddleTestWebhookSecretKey: envVars.PADDLE_TEST_WEBHOOK_SECRET_KEY,
   paddleLiveWebhookSecretKey: envVars.PADDLE_LIVE_WEBHOOK_SECRET_KEY,
   tmdbReadAccessToken: envVars.TMDB_READ_ACCESS_TOKEN,
-  tmdbApiKey: envVars.TMDB_API_KEY
+  tmdbApiKey: envVars.TMDB_API_KEY,
 };

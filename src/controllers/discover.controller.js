@@ -3,6 +3,8 @@ const Responses = require("../utils/responses");
 const logger = require("../config/logger");
 const { userService } = require("../services");
 const { webSearch } = require("../utils/openaiHelper");
+const bing = require("../utils/bing");
+const getYouTubeTrailerUrl = require("../utils/getYoutubeTrailer");
 
 // onboarding ==> get new feed + cache
 // swiping(2) ===> get new feed + cache
@@ -72,8 +74,14 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
 
     logger.info(clean);
 
-    // populate with youtube trailer
-    // popuate tmdb data
+    // youtube trailer
+    // getYouTubeTrailerUrl(title, year)
+    // https://www.youtube.com/results?search_query=Inception+(2010)+trailer
+
+    // populate with tmdb data
+
+    const websites = (await bing("test"))?.webPages?.value;
+    logger.info(websites);
 
     // todo: add to cache
     // todo: return data
