@@ -67,21 +67,24 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
       input,
     });
 
-    const clean = results
+    let data = results
       .replace(/```json/, "")
       .replace(/```/, "")
       .trim();
 
-    logger.info(clean);
+    let parsedData = JSON.parse(data);
 
     // youtube trailer
-    // getYouTubeTrailerUrl(title, year)
-    // https://www.youtube.com/results?search_query=Inception+(2010)+trailer
+    parsedData = parsedData.map((item) => {
+      // ==> if available in `Content`, return, else
 
-    // populate with tmdb data
+      const trailerUrl = getYouTubeTrailerUrl(item.title, item.year);
+      return { ...item, trailerUrl }; // Add trailer URL to the item
 
-    const websites = (await bing("test"))?.webPages?.value;
-    logger.info(websites);
+      // todo: populate with tmdb data (if min. in duration => movie, else series)
+
+      // todo: store each movie in `content` model
+    });
 
     // todo: add to cache
     // todo: return data
