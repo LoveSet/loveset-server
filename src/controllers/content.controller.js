@@ -34,24 +34,30 @@ const getContent = catchAsync(async (req, res) => {
         data?.streamingAvailability?.length === 0
       ) {
         const streamingData = await streamingAvailability(
-          "/shows/search/title",
+          "shows/search/title",
           {
             country: "us",
             title: content.title,
           }
         );
 
-        console.log("streamingData", streamingData);
-
         if (Array.isArray(streamingData) && streamingData.length > 0) {
           const firstItem = streamingData[0];
           const streamingOptions = firstItem?.streamingOptions?.us || [];
 
-          // Extract name and link for each streaming service
-          const availability = streamingOptions.map((option) => ({
-            name: option.service.name,
-            link: option.link,
-          }));
+          // Extract unique name and link for each streaming service
+          const availability = [];
+          const seenNames = new Set();
+
+          streamingOptions.forEach((option) => {
+            if (!seenNames.has(option.service.name)) {
+              availability.push({
+                name: option.service.name,
+                link: option.link,
+              });
+              seenNames.add(option.service.name);
+            }
+          });
 
           // Update content with streaming availability
           data.streamingAvailability = availability;
