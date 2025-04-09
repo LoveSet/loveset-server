@@ -66,7 +66,7 @@ const userSchema = mongoose.Schema(
       default: 0,
     },
     contentLiked: {
-      // ["Inception (2010)"]
+      // ["Inception(2010)"]
       type: Array,
     },
     contentPassed: {

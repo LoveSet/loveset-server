@@ -4,6 +4,18 @@ const { toJSON, paginate } = require("./plugins");
 
 const watchlistSchema = mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
+    contentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Content",
+      required: true,
+      index: true,
+    },
     unixTimestamp: {
       type: Number,
       default: function () {

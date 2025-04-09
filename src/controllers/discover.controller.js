@@ -2,7 +2,12 @@ const catchAsync = require("../utils/catchAsync");
 const Responses = require("../utils/responses");
 const logger = require("../config/logger");
 const { Cache } = require("../models");
-const { userService, contentService, cacheService } = require("../services");
+const {
+  userService,
+  contentService,
+  cacheService,
+  watchlistService,
+} = require("../services");
 const { webSearch } = require("../utils/openaiHelper");
 const getYouTubeTrailerUrl = require("../utils/getYoutubeTrailer");
 const tmdb = require("../utils/tmdb");
@@ -252,7 +257,88 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
   }
 });
 
+const like = catchAsync(async (req, res) => {
+  try {
+    const { contentId } = req.body;
+    const userId = req.user.id;
+
+    // Update the cache to mark the content as liked
+    const cacheUpdateResult = await cacheService.updateCacheByFilter(
+      { userId, contentId },
+      { liked: true }
+    );
+
+    if (!cacheUpdateResult) {
+      return Responses.handleError(404, "Content not found in cache", res);
+    }
+
+    // Add the content to the user's liked list
+    const content = await contentService.getContentByFilter({ _id: contentId });
+    if (content) {
+      await userService.updateByUserId(userId, {
+        $push: { contentLiked: `${content.title}(${content.year})` },
+      });
+
+      // Add the content to the user's watchlist
+      await watchlistService.addToWatchlist({
+        userId,
+        contentId,
+      });
+    }
+
+    return Responses.handleSuccess(
+      200,
+      "Content marked as liked and added to watchlist",
+      res,
+      {}
+    );
+  } catch (error) {
+    logger.error(error);
+    return Responses.handleError(
+      500,
+      "An error occurred. Please try again.",
+      res
+    );
+  }
+});
+
+const pass = catchAsync(async (req, res) => {
+  try {
+    const { contentId } = req.body;
+    const userId = req.user.id;
+
+    // Update the cache to mark the content as passed
+    const cacheUpdateResult = await cacheService.updateCacheByFilter(
+      { userId, contentId },
+      { passed: true }
+    );
+
+    if (!cacheUpdateResult) {
+      return Responses.handleError(404, "Content not found in cache", res);
+    }
+
+    // Add the content to the user's passed list
+    const content = await contentService.getContentByFilter({ _id: contentId });
+    if (content) {
+      await userService.updateByUserId(userId, {
+        $push: { contentPassed: `${content.title}(${content.year})` },
+      });
+    }
+
+    return Responses.handleSuccess(200, "Content marked as passed", res, {});
+  } catch (error) {
+    logger.error(error);
+    return Responses.handleError(
+      500,
+      "An error occurred. Please try again.",
+      res
+    );
+  }
+});
+
 module.exports = {
   getCache,
   getContent,
+  like,
+  pass,
 };
