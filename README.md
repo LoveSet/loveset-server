@@ -22,18 +22,18 @@
 - watchlist: [done]
   - list [done]
   - delete from watchlist [done]
-- billing [done]:
+- billing []:
   - billing [done]
   - webhook [done]
   - unsubscribe [done]
   - create paddle product, pricings, webhook(variable) & email notifications. [done]
   - create redis [done]
   - email_notifications [done]
-- cron [done]:
+- cron []:
   - subscription [done]
   - reset swipes [done]
 - emails []
-  - welcome []
-  - referral []
-  - expired []
+  - welcome [done]
+  - referral [done]
+  - expired [done]
 - rate_limits + not_premium_limits + not_premium_and_out_of_swipes []
