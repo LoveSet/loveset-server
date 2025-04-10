@@ -26,8 +26,15 @@ update []:
 - watchlist: [done]
   - list [done]
   - delete from watchlist [done]
-- premium + webhook (seperate_by_notification_id) + email_notifications + unsubscribe []
+- billing []:
+  - billing [done]
+  - webhook + seperate_by_notification_id []
+  - unsubscribe [done]
   - create paddle product, pricings, webhook(variable) & email notifications. [done]
   - create redis [done]
+  - email_notifications [done]
+- cron []:
+  - subscription [done]
+  - reset swipes []
 - emails []
 - rate_limits + not_premium_limits []
