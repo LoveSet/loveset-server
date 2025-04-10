@@ -17,10 +17,12 @@ const cacheRateLimiter = rateLimit({
   },
 });
 
+// I did an experiement with tinder and I did 50 swipes in 1 minute.
+
 // Rate limiter for getContent - stricter limit due to API costs
 const contentRateLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute window
-  max: 10, // 10 requests per minute per IP
+  max: 20, // 10 requests per minute per IP
   // standardHeaders: true,
   handler: (req, res) => {
     logger.error(

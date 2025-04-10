@@ -17,6 +17,7 @@ router.get(
   "/content",
   rateLimiter.contentRateLimiter,
   auth(),
+  // validate(discoverValidation.getContent),
   discoverController.getContent
 );
 router.post(

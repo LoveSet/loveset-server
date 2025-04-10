@@ -48,6 +48,8 @@ const getCache = catchAsync(async (req, res) => {
 const getContent = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
+    // const { liked, passed } = req.body;
+
     const user = await userService.getByUserId(userId);
 
     const contentTypes = user?.contentTypes.join(",");
@@ -55,8 +57,17 @@ const getContent = catchAsync(async (req, res) => {
     const genres = user?.genres?.join(",");
     const timePeriods = user?.timePeriods?.join(",");
     const contentCached = user?.contentCached?.join(",");
-    const contentLiked = user?.contentLiked?.join(",") || "";
-    const contentPassed = user?.contentPassed?.join(",") || "";
+
+    // const contentLiked = user?.contentLiked?.join(",") || "";
+    // const contentPassed = user?.contentPassed?.join(",") || "";
+
+    // changed below to only a set of content that the user just (recently) liked or disliked, that removes the narrowness of the profile, the user's taste also constantly changes too
+    // const contentLiked = liked?.join(",") || "";
+    // const contentPassed = passed?.join(",") || "";
+
+    // so it's like a sliding window
+    const contentLiked = user?.contentLiked?.slice(-10).join(",") || "";
+    const contentPassed = user?.contentPassed?.slice(-10).join(",") || "";
 
     // Otherwise, generate new content
     let input = `
@@ -71,7 +82,7 @@ FOCUS:
 - Slightly favor content that is similar in theme, genre, or tone to what the user has previously liked — but do not overly rely on this.
 - Include 1 popular, trending, or recent titles if they are a good fit — but keep the majority of results unique, varied, or lesser-known.
 - Avoid showing any content the user has already cached, liked or passed.
-- Rarely reuse liked/passed content if list is hard to fill — for nostalgia or hidden gems, never overdo it.
+- Rarely reuse cached/liked/passed content if list is hard to fill — for nostalgia or hidden gems, never overdo it.
 - Ensure results span **different content types** (movies, TV shows, documentaries, animation, anime, short films) based on the user's preferences.
 - If the user's profile is too narrow, use the **closest available match** to maintain variety and engagement.
 - Pull content from **reliable and varied sources**. Do not simply grab the first result found.
