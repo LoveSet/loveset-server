@@ -66,8 +66,8 @@ const getContent = catchAsync(async (req, res) => {
     // const contentPassed = passed?.join(",") || "";
 
     // so it's like a sliding window
-    const contentLiked = user?.contentLiked?.slice(-10).join(",") || "";
-    const contentPassed = user?.contentPassed?.slice(-10).join(",") || "";
+    const contentLiked = user?.contentLiked?.slice(-15).join(",") || "";
+    const contentPassed = user?.contentPassed?.slice(-15).join(",") || "";
 
     // Otherwise, generate new content
     let input = `
