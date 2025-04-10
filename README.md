@@ -26,9 +26,9 @@ update []:
 - watchlist: [done]
   - list [done]
   - delete from watchlist [done]
-- billing []:
+- billing [done]:
   - billing [done]
-  - webhook + seperate_by_notification_id []
+  - webhook [done]
   - unsubscribe [done]
   - create paddle product, pricings, webhook(variable) & email notifications. [done]
   - create redis [done]
