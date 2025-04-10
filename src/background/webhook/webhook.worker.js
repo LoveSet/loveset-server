@@ -4,11 +4,7 @@ const logger = require("../../config/logger");
 const mongoose = require("mongoose");
 const redisOptions = require("../../config/redisOptions");
 const { Paddle, Environment, EventName } = require("@paddle/paddle-node-sdk");
-const {
-  userService,
-  billingService,
-  notificationService,
-} = require("../../services");
+const { userService, billingService } = require("../../services");
 const moment = require("moment");
 
 mongoose.connect(config.mongoose.url, config.mongoose.options);
@@ -113,12 +109,6 @@ const webhookWorker = new Worker(
           }
 
           await userService.updateByUserId(userId, updateBody);
-
-          // store notification (2_types)
-          // when you first subscribe (!user.premiumSince)
-          const platle = await userService.getUserByFilter({
-            username: "platle",
-          });
 
           if (!user?.premiumSince) {
             // when you first subscribes

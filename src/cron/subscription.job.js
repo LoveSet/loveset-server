@@ -1,9 +1,7 @@
 const cron = require("node-cron");
-// const { userService, emailService } = require("../services");
-const logger = require("../config/logger");
 const moment = require("moment");
 // const { emitDataToUser } = require("../socket/server");
-const { userService } = require("../services");
+const { userService, emailService } = require("../services");
 const { Paddle, Environment, EventName } = require("@paddle/paddle-node-sdk");
 const config = require("../config/config");
 
@@ -57,10 +55,7 @@ const updateExpiredSubscriptions = async () => {
           //   action: "refresh_notifications_data",
           // });
           // todo:send email
-          // await emailService.sendExpiredSubscriptionEmail(
-          //   user?.name,
-          //   user?.email
-          // );
+          await emailService.sendSubscriptionExpiredEmail(user?.email);
         }
       }
 

@@ -1,7 +1,12 @@
 const catchAsync = require("../utils/catchAsync");
 const Responses = require("../utils/responses");
 const logger = require("../config/logger");
-const { authService, userService, tokenService } = require("../services");
+const {
+  authService,
+  userService,
+  tokenService,
+  emailService,
+} = require("../services");
 const { verifyGoogleToken } = require("../utils/social");
 const moment = require("moment");
 
@@ -54,8 +59,12 @@ const google = catchAsync(async (req, res) => {
                 swipesUsed: user?.swipesUsed - 10,
               }
             );
+            await emailService.sendswipesAwardEmail(user?.email);
           }
         }
+
+        // send welcome email
+        await emailService.sendWelcomeEmail(googleResponse?.email);
 
         data.next = "/app/onboarding";
       } else {
