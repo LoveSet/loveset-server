@@ -33,8 +33,8 @@ update []:
   - create paddle product, pricings, webhook(variable) & email notifications. [done]
   - create redis [done]
   - email_notifications [done]
-- cron []:
+- cron [done]:
   - subscription [done]
-  - reset swipes []
+  - reset swipes [done]
 - emails []
 - rate_limits + not_premium_limits []

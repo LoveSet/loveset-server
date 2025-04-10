@@ -3,6 +3,7 @@ const Responses = require("../utils/responses");
 const logger = require("../config/logger");
 const { authService, userService, tokenService } = require("../services");
 const { verifyGoogleToken } = require("../utils/social");
+const moment = require("moment");
 
 const google = catchAsync(async (req, res) => {
   try {
@@ -22,6 +23,7 @@ const google = catchAsync(async (req, res) => {
         }`,
         email: googleResponse?.email,
         country,
+        lastSwipeReset: moment().unix(),
       });
 
       // google is one-way authentication

@@ -17,7 +17,9 @@ const { createBullBoard } = require("@bull-board/api");
 const { BullMQAdapter } = require("@bull-board/api/bullMQAdapter");
 const { ExpressAdapter } = require("@bull-board/express");
 const { webhookQueue } = require("./backgroundJobs/webhook/webhook.queue");
-const { subscriptionJob } = require("./cron");
+const { subscriptionJob, swipeJob } = require("./cron");
+
+const WebhookEvent = require("./backgroundJobs/webhook/webhook.event");
 
 const app = express();
 
@@ -101,11 +103,7 @@ app.use(
 const serverAdapter = new ExpressAdapter();
 
 const bullBoard = createBullBoard({
-  queues: [
-    new BullMQAdapter(messageQueue),
-    new BullMQAdapter(postQueue),
-    new BullMQAdapter(webhookQueue),
-  ],
+  queues: [new BullMQAdapter(webhookQueue)],
   serverAdapter: serverAdapter,
 });
 
@@ -117,6 +115,7 @@ app.use("/bull-board", serverAdapter.getRouter());
 /*  ======================= CRON JOBS ======================= */
 if (config.env === "production") {
   subscriptionJob.updateExpiredSubscriptions();
+  swipeJob.refreshSwipes();
 }
 /*  ========================================================= */
 
