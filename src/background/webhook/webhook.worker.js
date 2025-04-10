@@ -7,7 +7,15 @@ const { Paddle, Environment, EventName } = require("@paddle/paddle-node-sdk");
 const { userService, billingService } = require("../../services");
 const moment = require("moment");
 
-mongoose.connect(config.mongoose.url, config.mongoose.options);
+mongoose
+  .connect(config.mongoose.url, config.mongoose.options)
+  .then(() => {
+    logger.info("MongoDB connected successfully");
+  })
+  .catch((error) => {
+    logger.error("Error starting queues:", error);
+    process.exit(1);
+  });
 
 let paddle;
 

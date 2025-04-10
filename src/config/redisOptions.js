@@ -1,5 +1,6 @@
 const IORedis = require("ioredis");
 const config = require("./config");
+const logger = require("./logger");
 
 let redis;
 
@@ -18,7 +19,8 @@ try {
     connectTimeout: 10000,
   });
 } catch (error) {
-  console.error("Redis connection error:", error);
+  logger.error("Redis connection error:", error);
+  process.exit(1);
   // Handle the error as needed, e.g., use a fallback or exit the process
 }
 

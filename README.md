@@ -22,7 +22,7 @@
 - watchlist: [done]
   - list [done]
   - delete from watchlist [done]
-- billing []:
+- billing [done]:
   - billing [done]
   - webhook [done]
   - unsubscribe [done]
