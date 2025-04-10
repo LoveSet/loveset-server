@@ -10,10 +10,6 @@
 - Have a sense of what the user's taste is too [done]
 - 📌fetch onboarding with the 3rd question [done]
 
-update []:
-
-- if nothing in cache to show, generate more []
-
 - google += referral [done]
 - onboarding [done]
 - Get User [done]
@@ -37,4 +33,7 @@ update []:
   - subscription [done]
   - reset swipes [done]
 - emails []
-- rate_limits + not_premium_limits []
+  - welcome []
+  - referral []
+  - expired []
+- rate_limits + not_premium_limits + not_premium_and_out_of_swipes []
