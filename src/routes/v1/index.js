@@ -4,6 +4,7 @@ const userRoute = require("./user.route");
 const discoverRoute = require("./discover.route");
 const contentRoute = require("./content.route");
 const watchlistRoute = require("./watchlist.route");
+const billingRoute = require("./billing.route");
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const defaultRoutes = [
   {
     path: "/watchlist",
     route: watchlistRoute,
+  },
+  {
+    path: "/billing",
+    route: billingRoute,
   },
 ];
 

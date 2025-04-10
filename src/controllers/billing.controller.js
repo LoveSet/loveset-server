@@ -6,7 +6,7 @@ const { userService, billingService } = require("../services");
 const config = require("../config/config");
 // const { queryPaddle } = require("../utils/queryPaddle");
 const { Paddle, Environment, EventName } = require("@paddle/paddle-node-sdk");
-const { webhookQueue } = require("../backgroundJobs/webhook/webhook.queue");
+const { webhookQueue } = require("../background/webhook/webhook.queue");
 
 // let stripe;
 // let endpointSecret;
