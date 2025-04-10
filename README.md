@@ -1,14 +1,18 @@
 - System Prompt: Your goal is to keep this user engaged, give content that will more than likely be liked by this person especially taking their likes and dislikes into consideration.
-- System Prompt: While you can go for popular ones, you should also be on the lookout for obscure shows that may fit this user's interest. []
+- System Prompt: While you can go for popular ones, you should also be on the lookout for obscure shows that may fit this user's interest. [done]
 - System Prompt: Note how many times a user has liked something. [update]
-- System Prompt: if there's a chance of repition, go to a liked movie, and look for something like that in that space, branch as much as possible []
-- if not a valid js array of movies, try again. []
-- so constantly filter items that have already been interacted with. []
-- If the query is too narrow, focus on specific preferences. []
-- Never be strict with preferences. []
-- Keep things in a loop where necessary. []
-- Have a sense of what the user's taste is too []
-- 📌fetch onboarding with the 3rd question []
+- System Prompt: if there's a chance of repition, go to a liked movie, and look for something like that in that space, branch as much as possible [done]
+- if not a valid js array of movies, try again. [done]
+- so constantly filter items that have already been interacted with. [done]
+- If the query is too narrow, focus on specific preferences. [done]
+- Never be strict with preferences. [done]
+- Keep things in a loop where necessary. [done]
+- Have a sense of what the user's taste is too [done]
+- 📌fetch onboarding with the 3rd question [done]
+
+update []:
+
+- if nothing in cache to show, generate more []
 
 - google += referral [done]
 - onboarding [done]
@@ -22,8 +26,8 @@
 - watchlist: [done]
   - list [done]
   - delete from watchlist [done]
-- premium + webhook + unsubscribe []
+- premium + webhook (seperate_by_notification_id) + email_notifications + unsubscribe []
+  - create paddle product, pricings, webhook(variable) & email notifications. [done]
+  - create redis [done]
 - emails []
-- rate_limits []
-
-- create email notification for payments & cancelled subscriptions on paddle []
+- rate_limits + not_premium_limits []

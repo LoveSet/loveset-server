@@ -10,6 +10,12 @@ const envVarsSchema = Joi.object()
       .valid("production", "development", "test")
       .required(),
     PORT: Joi.number().default(9000),
+    DEV_REDIS_URL: Joi.string().description("dev redis url"),
+    DEV_REDIS_PORT: Joi.number().description("dev redis port"),
+    DEV_REDIS_PASSWORD: Joi.string().description("dev redis password"),
+    PROD_REDIS_URL: Joi.string().description("prod redis url"),
+    PROD_REDIS_PORT: Joi.number().description("prod redis port"),
+    PROD_REDIS_PASSWORD: Joi.string().description("prod redis password"),
     DEV_MONGODB_URL: Joi.string().required().description("Dev Mongo DB url"),
     PROD_MONGODB_URL: Joi.string().required().description("Prod Mongo DB url"),
     JWT_SECRET: Joi.string().required().description("JWT secret key"),
@@ -17,7 +23,7 @@ const envVarsSchema = Joi.object()
     PROD_CLIENT_URL: Joi.string().description("prod client url"),
     S3_BUCKET_NAME: Joi.string().description("s3 bucket name"),
     AWS_REGION: Joi.string().description("aws region"),
-    OPENAI_SECRET: Joi.string().description("open ai secret"),
+    OPENAI_SECRET: Joi.E().description("open ai secret"),
     BING_SEARCH_KEY: Joi.string().description("bing search key"),
     FILES_URL: Joi.string().description("files url"),
     EMAIL_FROM: Joi.string().description(
@@ -73,6 +79,18 @@ module.exports = {
     resetPasswordExpirationMinutes:
       envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
+  },
+  redis: {
+    dev: {
+      host: envVars.DEV_REDIS_URL,
+      port: envVars.DEV_REDIS_PORT,
+      password: envVars.DEV_REDIS_PASSWORD,
+    },
+    prod: {
+      host: envVars.PROD_REDIS_URL,
+      port: envVars.PROD_REDIS_PORT,
+      password: envVars.PROD_REDIS_PASSWORD,
+    },
   },
   clientUrl: {
     dev: envVars.DEV_CLIENT_URL,

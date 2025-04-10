@@ -6,14 +6,18 @@ const compression = require("compression");
 const cors = require("cors");
 const morgan = require("./config/morgan");
 const { appRateLimiter } = require("./middleware/rateLimiter");
+const config = require("./config/config");
 const routes = require("./routes/v1");
 const { errorConverter, errorHandler } = require("./middleware/error");
 const Responses = require("./utils/responses");
 const passport = require("passport");
 const { jwtStrategy } = require("./config/passport");
-
-const config = require("./config/config");
-
+const basicAuth = require("express-basic-auth");
+const { createBullBoard } = require("@bull-board/api");
+const { BullMQAdapter } = require("@bull-board/api/bullMQAdapter");
+const { ExpressAdapter } = require("@bull-board/express");
+const { webhookQueue } = require("./backgroundJobs/webhook/webhook.queue");
+const { subscriptionJob } = require("./cron");
 
 const app = express();
 
@@ -42,7 +46,7 @@ let origin;
 if (config.env === "development") {
   origin = "*";
 } else {
-  origin = config.prodClientUrl;
+  origin = config.clientUrl.prod;
 }
 
 const corsOptions = {
@@ -78,6 +82,43 @@ app.use(function (req, res, next) {
   res.setHeader("Cross-Origin-Resource-Policy", "same-site");
   next();
 });
+
+/*  ======================= BULL BOARD ======================= */
+const users = {
+  root_1: config.redisBullboardPassword,
+};
+
+app.use(
+  "/bull-board",
+  basicAuth({
+    users,
+    challenge: true, // Forces unauthorized response if credentials are missing
+    unauthorizedResponse: "Unauthorized", // Response when authentication fails
+  })
+);
+
+// BULL-BOARD
+const serverAdapter = new ExpressAdapter();
+
+const bullBoard = createBullBoard({
+  queues: [
+    new BullMQAdapter(messageQueue),
+    new BullMQAdapter(postQueue),
+    new BullMQAdapter(webhookQueue),
+  ],
+  serverAdapter: serverAdapter,
+});
+
+serverAdapter.setBasePath("/bull-board");
+app.use("/bull-board", serverAdapter.getRouter());
+
+/*  ========================================================= */
+
+/*  ======================= CRON JOBS ======================= */
+if (config.env === "production") {
+  subscriptionJob.updateExpiredSubscriptions();
+}
+/*  ========================================================= */
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
