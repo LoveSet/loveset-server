@@ -14,7 +14,7 @@ const tmdb = require("../utils/tmdb");
 const { movieGenres, tvShowGenres } = require("../utils/tmdbGenres");
 
 // onboarding ==> get new feed
-// swiping(2) ===> get new feed
+// 4 items left ===> get new feed
 // refresh ==> get cache
 
 const getCache = catchAsync(async (req, res) => {

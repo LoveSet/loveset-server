@@ -22,7 +22,7 @@ const cacheRateLimiter = rateLimit({
 // Rate limiter for getContent - stricter limit due to API costs
 const contentRateLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute window
-  max: 20, // 10 requests per minute per IP
+  max: 20, // 20 requests per minute per IP
   // standardHeaders: true,
   handler: (req, res) => {
     logger.error(
