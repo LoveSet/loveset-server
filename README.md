@@ -36,4 +36,7 @@
   - welcome\* [done]
   - referral\* [done]
   - expired\* [done]
-- rate_limits + not_premium_limits + not_premium_and_out_of_swipes []
+- limits []
+  - rate_limits [done]
+  - not_premium_limits []
+  - not_premium_and_out_of_swipes []

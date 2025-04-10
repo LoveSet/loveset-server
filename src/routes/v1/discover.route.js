@@ -3,11 +3,22 @@ const auth = require("../../middleware/auth");
 const validate = require("../../middleware/validate");
 const discoverValidation = require("../../validations/discover.validation");
 const discoverController = require("../../controllers/discover.controller");
+const rateLimiter = require("../../middleware/rateLimiter");
 
 const router = express.Router();
 
-router.get("/cache", auth(), discoverController.getCache);
-router.get("/content", auth(), discoverController.getContent);
+router.get(
+  "/cache",
+  rateLimiter.cacheRateLimiter,
+  auth(),
+  discoverController.getCache
+);
+router.get(
+  "/content",
+  rateLimiter.contentRateLimiter,
+  auth(),
+  discoverController.getContent
+);
 router.post(
   "/like",
   auth(),

@@ -5,7 +5,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const compression = require("compression");
 const cors = require("cors");
 const morgan = require("./config/morgan");
-const { appRateLimiter } = require("./middleware/rateLimiter");
+const { globalRateLimiter } = require("./middleware/rateLimiter");
 const config = require("./config/config");
 const routes = require("./routes/v1");
 const { errorConverter, errorHandler } = require("./middleware/error");
@@ -75,7 +75,7 @@ app.use(passport.initialize());
 passport.use("jwt", jwtStrategy);
 
 app.use((req, res, next) => {
-  appRateLimiter(req, res, next);
+  globalRateLimiter(req, res, next);
 });
 
 app.use("/v1", routes);
