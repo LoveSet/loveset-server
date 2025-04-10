@@ -29,7 +29,7 @@
   - create paddle product, pricings, webhook(variable) & email notifications. [done]
   - create redis [done]
   - email_notifications [done]
-- cron []:
+- cron [done]:
   - subscription [done]
   - reset swipes [done]
 - emails []
