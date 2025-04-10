@@ -158,4 +158,5 @@ const webhookWorker = new Worker(
   redisOptions
 );
 
-// NODE_ENV=production node src/backgroundJobs/webhook/webhook.worker.js --name webhook-worker
+// NODE_ENV=development node src/background/webhook/webhook.worker.js
+// NODE_ENV=production node src/background/webhook/webhook.worker.js --name webhook-worker

@@ -23,7 +23,7 @@ const envVarsSchema = Joi.object()
     PROD_CLIENT_URL: Joi.string().description("prod client url"),
     S3_BUCKET_NAME: Joi.string().description("s3 bucket name"),
     AWS_REGION: Joi.string().description("aws region"),
-    OPENAI_SECRET: Joi.E().description("open ai secret"),
+    OPENAI_SECRET: Joi.string().description("open ai secret"),
     BING_SEARCH_KEY: Joi.string().description("bing search key"),
     FILES_URL: Joi.string().description("files url"),
     EMAIL_FROM: Joi.string().description(
@@ -37,6 +37,9 @@ const envVarsSchema = Joi.object()
     ),
     GOOGLE_CLIENT_ID: Joi.string().description("google client id"),
     GOOGLE_CLIENT_SECRET: Joi.string().description("google client secret"),
+    REDIS_BULLBOARD_PASSWORD: Joi.string().description(
+      "redis bullboard password"
+    ),
     PADDLE_TEST_URL: Joi.string().description("paddle test url"),
     PADDLE_LIVE_URL: Joi.string().description("paddle live url"),
     PADDLE_TEST_API_KEY: Joi.string().description("paddle test api key"),
@@ -111,6 +114,7 @@ module.exports = {
   },
   googleClientId: envVars.GOOGLE_CLIENT_ID,
   googleClientSecret: envVars.GOOGLE_CLIENT_SECRET,
+  redisBullboardPassword: envVars.REDIS_BULLBOARD_PASSWORD,
   paddleTestUrl: envVars.PADDLE_TEST_URL,
   paddleLiveUrl: envVars.PADDLE_LIVE_URL,
   paddleTestApiKey: envVars.PADDLE_TEST_API_KEY,

@@ -72,6 +72,5 @@ const updateExpiredSubscriptions = async () => {
 };
 
 module.exports = {
-  subscriptionExpiringReminder,
   updateExpiredSubscriptions,
 };

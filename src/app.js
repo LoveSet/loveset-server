@@ -16,10 +16,10 @@ const basicAuth = require("express-basic-auth");
 const { createBullBoard } = require("@bull-board/api");
 const { BullMQAdapter } = require("@bull-board/api/bullMQAdapter");
 const { ExpressAdapter } = require("@bull-board/express");
-const { webhookQueue } = require("./backgroundJobs/webhook/webhook.queue");
+const { webhookQueue } = require("./background/webhook/webhook.queue");
 const { subscriptionJob, swipeJob } = require("./cron");
 
-const WebhookEvent = require("./backgroundJobs/webhook/webhook.event");
+const WebhookEvent = require("./background/webhook/webhook.event");
 
 const app = express();
 
