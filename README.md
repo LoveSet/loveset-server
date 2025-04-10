@@ -32,7 +32,7 @@
 - cron [done]:
   - subscription [done]
   - reset swipes [done]
-- emails []
+- emails [done]
   - welcome [done]
   - referral [done]
   - expired [done]
