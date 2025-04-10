@@ -38,5 +38,4 @@
   - expired\* [done]
 - limits []
   - rate_limits [done]
-  - not_premium_limits []
   - not_premium_and_out_of_swipes []

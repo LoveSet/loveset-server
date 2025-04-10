@@ -52,6 +52,15 @@ const getContent = catchAsync(async (req, res) => {
 
     const user = await userService.getByUserId(userId);
 
+    // Check if the user is not premium and has used 10 or more swipes
+    if (!user.premium && user.swipesUsed >= 10) {
+      return Responses.handleError(
+        403,
+        "You have reached your daily swipe limit. Upgrade to premium for unlimited swipes.",
+        res
+      );
+    }
+
     const contentTypes = user?.contentTypes.join(",");
     const filmIndustries = user?.filmIndustries?.join(",");
     const genres = user?.genres?.join(",");
@@ -301,6 +310,7 @@ const like = catchAsync(async (req, res) => {
         { _id: userId },
         {
           $push: { contentLiked: `${content.title} (${content.year})` },
+          $inc: { swipesUsed: 1 }, // Increment swipesUsed
         }
       );
 
@@ -349,6 +359,7 @@ const pass = catchAsync(async (req, res) => {
         { _id: userId },
         {
           $push: { contentPassed: `${content.title} (${content.year})` },
+          $inc: { swipesUsed: 1 }, // Increment swipesUsed
         }
       );
     }
