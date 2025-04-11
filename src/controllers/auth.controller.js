@@ -8,7 +8,6 @@ const {
   emailService,
 } = require("../services");
 const { verifyGoogleToken } = require("../utils/social");
-const moment = require("moment");
 
 const google = catchAsync(async (req, res) => {
   try {
@@ -28,7 +27,7 @@ const google = catchAsync(async (req, res) => {
         }`,
         email: googleResponse?.email,
         country,
-        lastSwipeReset: moment().unix(),
+        referrerCode: ref,
       });
 
       // google is one-way authentication
@@ -52,11 +51,12 @@ const google = catchAsync(async (req, res) => {
         // process referral
         if (ref) {
           const user = await userService.getUserByFilter({ ref });
-          if (user) {
+          if (user && !user?.hasReferred) {
             await userService.updateUserByFilter(
               { ref },
               {
                 swipesUsed: user?.swipesUsed - 10,
+                hasReferred: true,
               }
             );
             await emailService.sendswipesAwardEmail(user?.email);

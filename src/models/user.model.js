@@ -45,6 +45,15 @@ const userSchema = mongoose.Schema(
         return generateRef(6);
       },
     },
+    referrerCode: {
+      type: String,
+      trim: true,
+      index: true,
+    },
+    hasReferred: {
+      type: Boolean,
+      default: false,
+    },
     country: {
       type: String,
       trim: true,
@@ -67,6 +76,13 @@ const userSchema = mongoose.Schema(
     },
     lastSwipeReset: {
       type: Number,
+      default: function () {
+        return moment().unix();
+      },
+    },
+    totalSwipes: {
+      type: Number,
+      default: 0,
     },
     contentCached: {
       type: Array,

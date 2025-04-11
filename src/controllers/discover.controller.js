@@ -310,7 +310,7 @@ const like = catchAsync(async (req, res) => {
         { _id: userId },
         {
           $push: { contentLiked: `${content.title} (${content.year})` },
-          $inc: { swipesUsed: 1 }, // Increment swipesUsed
+          $inc: { swipesUsed: 1, totalSwipes: 1 },
         }
       );
 
@@ -359,7 +359,7 @@ const pass = catchAsync(async (req, res) => {
         { _id: userId },
         {
           $push: { contentPassed: `${content.title} (${content.year})` },
-          $inc: { swipesUsed: 1 }, // Increment swipesUsed
+          $inc: { swipesUsed: 1, totalSwipes: 1 },
         }
       );
     }
