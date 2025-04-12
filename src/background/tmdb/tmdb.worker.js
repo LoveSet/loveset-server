@@ -6,6 +6,7 @@ const redisOptions = require("../../config/redisOptions");
 const { contentService } = require("../../services");
 const downloadFile = require("../../utils/downloadFile");
 const { multipartUploadToS3 } = require("../../utils/aws");
+const fs = require("fs");
 
 mongoose
   .connect(config.mongoose.url, config.mongoose.options)
@@ -49,3 +50,6 @@ const tmdbWorker = new Worker(
   },
   redisOptions
 );
+
+// NODE_ENV=development node src/background/tmdb/tmdb.worker.js
+// NODE_ENV=production node src/background/tmdb/tmdb.worker.js --name tmdb-worker
