@@ -210,14 +210,16 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
         let genreIds = [];
         let posterUrl = "";
         let synopsis = "";
+        let tmdbId = null;
 
         if (tmdbData.results && tmdbData.results.length > 0) {
-          const result = tmdbData.results[0];
-          genreIds = result.genre_ids || [];
-          posterUrl = result.poster_path
+          const result = tmdbData?.results[0];
+          tmdbId = result?.id;
+          genreIds = result?.genre_ids || [];
+          posterUrl = result?.poster_path
             ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
             : "";
-          synopsis = result.overview || "";
+          synopsis = result?.overview || "";
         }
 
         // Map genre IDs to genre names
@@ -232,6 +234,7 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
         if (posterUrl) {
           // Create content object
           const contentData = {
+            tmdbId,
             title: item.title,
             year: item.year,
             posterUrl: posterUrl,

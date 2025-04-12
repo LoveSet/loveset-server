@@ -2,9 +2,16 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 const { toJSON, paginate } = require("./plugins");
 const generateNum = require("../utils/generateNum");
+const tmdb = require("../utils/tmdb");
 
 const contentSchema = mongoose.Schema(
   {
+    tmdbId: {
+      type: Number,
+      required: true,
+      unique: true,
+      index: true,
+    },
     title: {
       type: String,
       required: true,
