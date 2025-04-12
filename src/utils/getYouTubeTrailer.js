@@ -18,9 +18,11 @@ async function getYouTubeTrailerUrl(title, year) {
     if (matches && matches[1]) {
       return `https://www.youtube.com/watch?v=${matches[1]}`;
     }
-    return null; // Return null if no valid YouTube URL is found
+    // return null; // Return null if no valid YouTube URL is found
+    return getYouTubeSearchUrl(title, year);
   } catch (error) {
-    throw new Error("Failed to fetch YouTube trailer URL");
+    return getYouTubeSearchUrl(title, year);
+    // throw new Error("Failed to fetch YouTube trailer URL");
   }
 }
 
