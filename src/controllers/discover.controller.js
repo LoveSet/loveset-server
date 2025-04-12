@@ -141,7 +141,7 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
       // If content already exists, use it, otherwise create new content
       if (!existingContent) {
         // Get trailer URL from YouTube
-        const trailerUrl = getYouTubeTrailerUrl(item.title, item.year);
+        const trailerUrl = await getYouTubeTrailerUrl(item.title, item.year);
 
         // Determine if it's a movie or TV show based on duration
         let isMovie = !item.duration.includes("season");
