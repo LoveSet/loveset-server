@@ -210,11 +210,11 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
         let genreIds = [];
         let posterUrl = "";
         let synopsis = "";
-        let tmdbId = null;
+        let tId = null;
 
         if (tmdbData.results && tmdbData.results.length > 0) {
           const result = tmdbData?.results[0];
-          tmdbId = result?.id;
+          tId = result?.id;
           genreIds = result?.genre_ids || [];
           posterUrl = result?.poster_path
             ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
@@ -234,7 +234,7 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
         if (posterUrl) {
           // Create content object
           const contentData = {
-            tmdbId,
+            tId,
             title: item.title,
             year: item.year,
             posterUrl: posterUrl,

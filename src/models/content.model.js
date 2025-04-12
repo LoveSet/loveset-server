@@ -6,7 +6,8 @@ const tmdb = require("../utils/tmdb");
 
 const contentSchema = mongoose.Schema(
   {
-    tmdbId: {
+    tId: {
+      // tmdbId
       type: Number,
       required: true,
       unique: true,
