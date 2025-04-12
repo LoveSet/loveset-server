@@ -248,15 +248,15 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
 
           // Store in content model
           existingContent = await contentService.createContent(contentData);
+
+          // add to queue (only add to queue if it was just created)
+          tmdbQueue.add("tmdb", {
+            contentId: existingContent?._id,
+          });
         }
       }
 
       if (existingContent) {
-        // add to queue
-        tmdbQueue.add("tmdb", {
-          contentId: existingContent._id,
-        });
-
         // add content to contentCached in user model
         await userService.updateUserByFilter(
           { _id: userId },
