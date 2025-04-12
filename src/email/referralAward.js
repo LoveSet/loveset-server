@@ -151,7 +151,7 @@ const referralAward = () => {
                             <p
                               style="font-size:12px;color:rgb(102,102,102);margin:0px;line-height:24px;margin-bottom:0px;margin-top:0px;margin-left:0px;margin-right:0px">
                               <a
-                                href="https://LoveSet.example.com"
+                                href="https://loveset.platle.com"
                                 style="color:rgb(88,145,255)"
                                 >Unsubscribe</a
                               >

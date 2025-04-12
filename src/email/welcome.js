@@ -102,7 +102,7 @@ const welcome = () => {
                         <tr>
                           <td>
                             <a
-                              href="https://LoveSet.example.com/start"
+                              href="https://loveset.platle.com/app/discover"
                               style="background-color:rgb(88,145,255);color:rgb(255,255,255);font-weight:700;padding-top:12px;padding-bottom:12px;padding-left:24px;padding-right:24px;border-radius:8px;text-decoration-line:none;text-align:center;box-sizing:border-box;line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;padding:12px 24px 12px 24px"
                               target="_blank"
                               ><span
