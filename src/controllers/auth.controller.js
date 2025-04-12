@@ -11,7 +11,7 @@ const { verifyGoogleToken } = require("../utils/social");
 
 const google = catchAsync(async (req, res) => {
   try {
-    const { code, ref, country } = req.body;
+    const { code, ref, country, location } = req.body;
 
     const googleResponse = await verifyGoogleToken(code);
     if (googleResponse == null) {
@@ -27,6 +27,7 @@ const google = catchAsync(async (req, res) => {
         }`,
         email: googleResponse?.email,
         country,
+        location,
         referrerCode: ref,
       });
 
@@ -66,7 +67,7 @@ const google = catchAsync(async (req, res) => {
         // send welcome email
         await emailService.sendWelcomeEmail(googleResponse?.email);
 
-        data.next = "/app/onboarding";
+        data.next = "/onboarding";
       } else {
         // NOT A NEW USER
         data.next = "/app/discover";

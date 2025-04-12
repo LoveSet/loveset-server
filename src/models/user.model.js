@@ -58,6 +58,9 @@ const userSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
+    location: {
+      type: Object,
+    },
     contentTypes: {
       type: Array,
     },
