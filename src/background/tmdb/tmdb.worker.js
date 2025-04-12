@@ -7,6 +7,7 @@ const { contentService } = require("../../services");
 const downloadFile = require("../../utils/downloadFile");
 const { multipartUploadToS3 } = require("../../utils/aws");
 const fs = require("fs");
+const { getYouTubeTrailerUrl } = require("../../utils/getYoutubeTrailer");
 
 mongoose
   .connect(config.mongoose.url, config.mongoose.options)
@@ -35,12 +36,22 @@ const tmdbWorker = new Worker(
         const posterFile = await downloadFile(content?.posterUrl);
         const posterFilePath = `files/${posterFile}`;
 
+        let updateData = {};
+
         await multipartUploadToS3(posterFile, posterFilePath, "image/jpeg");
         await fs.unlinkSync(`./files/${posterFile}`);
 
-        await contentService.updateContentByFilter(filter, {
-          posterUrl: posterFile,
-        });
+        updateData.posterUrl = posterFile;
+
+        if (content?.trailerUrl?.includes("search_query")) {
+          const trailerUrl = await getYouTubeTrailerUrl(
+            content?.title,
+            content?.year
+          );
+          updateData.trailerUrl = trailerUrl;
+        }
+
+        await contentService.updateContentByFilter(filter, updateData);
       }
 
       logger.info("tmdbWorker ended...");

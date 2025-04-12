@@ -46,22 +46,22 @@ const sendEmail = async (senderName = "LoveSet Inc.", to, subject, html) => {
 const sendWelcomeEmail = async (to) => {
   const subject = "Welcome to LoveSet!";
   const html = welcome();
-  const res = await sendEmail("LoveSet", to, subject, html);
-  return res;
+  // const res = await sendEmail("LoveSet", to, subject, html);
+  // return res;
 };
 
 const sendswipesAwardEmail = async (to) => {
   const subject = "You have Earned 10 Extra Swipes on LoveSet!";
   const html = referralAward();
-  const res = await sendEmail("LoveSet", to, subject, html);
-  return res;
+  // const res = await sendEmail("LoveSet", to, subject, html);
+  // return res;
 };
 
 const sendSubscriptionExpiredEmail = async (to) => {
   const subject = "Your LoveSet Subscription Has Expired!";
   const html = subscriptionExpired();
-  const res = await sendEmail("LoveSet", to, subject, html);
-  return res;
+  // const res = await sendEmail("LoveSet", to, subject, html);
+  // return res;
 };
 
 module.exports = {

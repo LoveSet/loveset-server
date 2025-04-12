@@ -33,4 +33,10 @@ router.post(
   discoverController.pass
 );
 
+router.get(
+  "/youtube",
+  validate(discoverValidation.getYouTubeUrl),
+  discoverController.getYouTubeUrl
+);
+
 module.exports = router;

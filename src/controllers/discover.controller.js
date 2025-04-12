@@ -9,7 +9,10 @@ const {
   watchlistService,
 } = require("../services");
 const { webSearch } = require("../utils/openaiHelper");
-const getYouTubeTrailerUrl = require("../utils/getYoutubeTrailer");
+const {
+  getYouTubeSearchUrl,
+  getYouTubeTrailerUrl,
+} = require("../utils/getYoutubeTrailer");
 const tmdb = require("../utils/tmdb");
 const { movieGenres, tvShowGenres } = require("../utils/tmdbGenres");
 const { tmdbQueue } = require("../background/tmdb/tmdb.queue");
@@ -141,7 +144,7 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
       // If content already exists, use it, otherwise create new content
       if (!existingContent) {
         // Get trailer URL from YouTube
-        const trailerUrl = await getYouTubeTrailerUrl(item.title, item.year);
+        const trailerUrl = await getYouTubeSearchUrl(item.title, item.year);
 
         // Determine if it's a movie or TV show based on duration
         let isMovie = !item.duration.includes("season");
@@ -386,9 +389,68 @@ const pass = catchAsync(async (req, res) => {
   }
 });
 
+const getYouTubeUrl = catchAsync(async (req, res) => {
+  try {
+    const { contentId } = req.query;
+
+    // Validate that contentId is provided
+    if (!contentId) {
+      return Responses.handleError(400, "Content ID is required", res);
+    }
+
+    // Fetch content details from the database
+    const content = await contentService.getContentByFilter({ _id: contentId });
+
+    if (!content) {
+      return Responses.handleError(404, "Content not found", res);
+    }
+
+    if (!content?.trailerUrl?.includes("search_query")) {
+      return Responses.handleSuccess(
+        200,
+        "YouTube trailer URL already exists",
+        res,
+        { trailerUrl: content.trailerUrl }
+      );
+    }
+
+    // Use the title and year from the content to fetch the YouTube trailer URL
+    const trailerUrl = await getYouTubeTrailerUrl(
+      content?.title,
+      content?.year
+    );
+
+    if (!trailerUrl) {
+      return Responses.handleError(404, "YouTube trailer not found", res);
+    }
+
+    // Update the content with the new trailer URL
+    await contentService.updateContentByFilter(
+      { _id: contentId },
+      { trailerUrl }
+    );
+
+    // Return the updated trailer URL
+    return Responses.handleSuccess(
+      200,
+      "YouTube trailer URL fetched and updated successfully",
+      res,
+      { trailerUrl }
+    );
+  } catch (error) {
+    logger.error(error);
+    return Responses.handleError(
+      500,
+      "An error occurred. Please try again.",
+      res
+    );
+  }
+});
+
 module.exports = {
   getCache,
   getContent,
   like,
   pass,
+  getYouTubeUrl,
 };

@@ -20,8 +20,15 @@ const pass = {
   }),
 };
 
+const getYouTubeUrl = {
+  query: Joi.object().keys({
+    contentId: Joi.string().custom(objectId).required(),
+  }),
+};
+
 module.exports = {
   getContent,
   like,
   pass,
+  getYouTubeUrl,
 };
