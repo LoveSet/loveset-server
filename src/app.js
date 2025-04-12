@@ -17,9 +17,11 @@ const { createBullBoard } = require("@bull-board/api");
 const { BullMQAdapter } = require("@bull-board/api/bullMQAdapter");
 const { ExpressAdapter } = require("@bull-board/express");
 const { webhookQueue } = require("./background/webhook/webhook.queue");
+const { tmdbQueue } = require("./background/tmdb/tmdb.queue");
 const { subscriptionJob, swipeJob } = require("./cron");
 
 const WebhookEvent = require("./background/webhook/webhook.event");
+const TMDBEvent = require("./background/tmdb/tmdb.event");
 
 const app = express();
 
@@ -103,7 +105,7 @@ app.use(
 const serverAdapter = new ExpressAdapter();
 
 const bullBoard = createBullBoard({
-  queues: [new BullMQAdapter(webhookQueue)],
+  queues: [new BullMQAdapter(webhookQueue), new BullMQAdapter(tmdbQueue)],
   serverAdapter: serverAdapter,
 });
 
@@ -113,10 +115,10 @@ app.use("/bull-board", serverAdapter.getRouter());
 /*  ========================================================= */
 
 /*  ======================= CRON JOBS ======================= */
-if (config.env === "production") {
-  subscriptionJob.updateExpiredSubscriptions();
-  swipeJob.refreshSwipes();
-}
+// if (config.env === "production") {
+subscriptionJob.updateExpiredSubscriptions();
+swipeJob.refreshSwipes();
+// }
 /*  ========================================================= */
 
 app.use((req, res, next) => {

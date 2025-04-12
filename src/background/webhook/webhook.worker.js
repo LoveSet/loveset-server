@@ -128,6 +128,7 @@ const webhookWorker = new Worker(
             // return { userId };
           }
 
+          logger.info("webhookWorker ended...");
           return { userId };
         }
 
@@ -143,7 +144,7 @@ const webhookWorker = new Worker(
               subscriptionManuallyExpired: moment().unix(),
             }
           );
-
+          logger.info("webhookWorker ended...");
           return {};
         }
         default:

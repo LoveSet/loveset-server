@@ -12,6 +12,7 @@ const { webSearch } = require("../utils/openaiHelper");
 const getYouTubeTrailerUrl = require("../utils/getYoutubeTrailer");
 const tmdb = require("../utils/tmdb");
 const { movieGenres, tvShowGenres } = require("../utils/tmdbGenres");
+const { tmdbQueue } = require("../background/tmdb/tmdb.queue");
 
 // onboarding ==> get new feed
 // 4 items left ===> get new feed
@@ -248,11 +249,18 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
       }
 
       if (existingContent) {
+        // add to queue
+        tmdbQueue.add("tmdb", {
+          contentId: existingContent._id,
+        });
+
         // add content to contentCached in user model
         await userService.updateUserByFilter(
           { _id: userId },
           {
-            $addToSet: { contentCached: existingContent.title },
+            $addToSet: {
+              contentCached: `${existingContent.title} (${existingContent.year})`,
+            },
           }
         );
 
