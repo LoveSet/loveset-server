@@ -12,7 +12,7 @@ router.get(
 );
 
 router.get(
-  "/:slug/streaming",
+  "/streaming/:slug/",
   validate(contentValidation.getContent),
   contentController.getStreamingAvailability
 );
