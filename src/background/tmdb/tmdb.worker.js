@@ -7,7 +7,7 @@ const { contentService } = require("../../services");
 const downloadFile = require("../../utils/downloadFile");
 const { multipartUploadToS3 } = require("../../utils/aws");
 const fs = require("fs");
-const { getYouTubeTrailerUrl } = require("../../utils/getYoutubeTrailer");
+const { getYouTubeTrailerUrl } = require("../../utils/getYouTubeTrailer");
 
 mongoose
   .connect(config.mongoose.url, config.mongoose.options)
