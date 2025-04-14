@@ -7,7 +7,7 @@ const addToWatchlist = async (data) => {
 const getWatchlistByFilter = async (filter, options) => {
   const { sort = "-createdAt", skip = 0, limit = 10 } = options;
   const query = Watchlist.find(filter).sort(sort).skip(skip).limit(limit);
-  query.populate("contentId", "title director slug posterUrl"); // Populate content fields
+  query.populate("contentId"); // Populate content fields
   return query.exec();
 };
 
