@@ -12,7 +12,7 @@ const { webSearch } = require("../utils/openaiHelper");
 const {
   getYouTubeSearchUrl,
   getYouTubeTrailerUrl,
-} = require("../utils/getYoutubeTrailer");
+} = require("../utils/getYouTubeTrailer");
 const tmdb = require("../utils/tmdb");
 const { movieGenres, tvShowGenres } = require("../utils/tmdbGenres");
 const { tmdbQueue } = require("../background/tmdb/tmdb.queue");
