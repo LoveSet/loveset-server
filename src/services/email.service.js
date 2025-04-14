@@ -53,8 +53,8 @@ const sendWelcomeEmail = async (to) => {
 const sendswipesAwardEmail = async (to) => {
   const subject = "You have Earned 10 Extra Swipes on LoveSet!";
   const html = referralAward();
-  // const res = await sendEmail("LoveSet", to, subject, html);
-  // return res;
+  const res = await sendEmail("LoveSet", to, subject, html);
+  return res;
 };
 
 const sendSubscriptionExpiredEmail = async (to) => {

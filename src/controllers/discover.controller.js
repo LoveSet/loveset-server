@@ -274,8 +274,6 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
         await cacheService.createCache({
           userId,
           contentId: existingContent._id,
-          liked: false,
-          passed: false,
         });
 
         return existingContent;
