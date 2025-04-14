@@ -34,6 +34,26 @@ const customer = catchAsync(async (req, res) => {
 
     let paddleCustomerId = user?.paddleCustomerId;
 
+    // Retrieve customers from Paddle
+    const customers = paddle.customers.list({
+      email: user?.email,
+    });
+
+    // Check if the customer already exists in Paddle
+    for await (const item of customers) {
+      if (item.email === user?.email) {
+        paddleCustomerId = item.id;
+
+        // Update the database with the retrieved paddleCustomerId
+        await userService.updateByUserId(userId, {
+          paddleCustomerId,
+        });
+
+        break;
+      }
+    }
+
+    // If no paddleCustomerId exists, create a new customer
     if (!paddleCustomerId) {
       const customer = await paddle.customers.create({
         email: user?.email,
@@ -42,6 +62,7 @@ const customer = catchAsync(async (req, res) => {
 
       paddleCustomerId = customer?.id;
 
+      // Update the database with the new paddleCustomerId
       await userService.updateByUserId(userId, {
         paddleCustomerId,
       });

@@ -77,7 +77,7 @@ const getStreamingAvailability = catchAsync(async (req, res) => {
     // Fetch streaming availability
     const streamingData = await streamingAvailability("/shows/search/title", {
       country: "us",
-      title: content.title,
+      title: `${content.title} ${content.year}`,
     });
 
     if (Array.isArray(streamingData) && streamingData.length > 0) {

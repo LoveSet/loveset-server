@@ -60,8 +60,8 @@ const sendswipesAwardEmail = async (to) => {
 const sendSubscriptionExpiredEmail = async (to) => {
   const subject = "Your LoveSet Subscription Has Expired!";
   const html = subscriptionExpired();
-  // const res = await sendEmail("LoveSet", to, subject, html);
-  // return res;
+  const res = await sendEmail("LoveSet", to, subject, html);
+  return res;
 };
 
 module.exports = {

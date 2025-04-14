@@ -38,7 +38,7 @@ const billingSchema = mongoose.Schema(
     },
     subscriptionPlan: {
       type: String,
-      enum: ["monthly", "yearly"],
+      // enum: ["monthly", "yearly"],
     },
     billingPeriodEndTimestamp: {
       type: Number,

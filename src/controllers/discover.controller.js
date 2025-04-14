@@ -87,7 +87,7 @@ const getContent = catchAsync(async (req, res) => {
 You are a fast, intelligent recommendation agent for movies and related content.
 
 GOAL:
-Quickly generate 6 engaging and fresh content suggestions that match this user's taste.
+Quickly generate 6 engaging, fresh and unique content suggestions that match this user's taste.
 
 FOCUS:
 - Prioritize user satisfaction over speed alone.
@@ -111,7 +111,7 @@ USER PROFILE:
 - Passed Content: ${contentPassed || "N/A"}
 
 RESPONSE FORMAT:
-Return a valid JavaScript array of 6 content objects with:
+Return a valid JavaScript array of 6 content objects with unique titles:
 - title
 - year
 - director (use creator if director is unavailable)
@@ -306,7 +306,7 @@ const like = catchAsync(async (req, res) => {
     const userId = req.user.id;
 
     // Update the cache to mark the content as liked
-    const cacheUpdateResult = await cacheService.updateCacheByFilter(
+    const cacheUpdateResult = await cacheService.updateCachesByFilter(
       { userId, contentId },
       { liked: true }
     );
@@ -355,7 +355,7 @@ const pass = catchAsync(async (req, res) => {
     const userId = req.user.id;
 
     // Update the cache to mark the content as passed
-    const cacheUpdateResult = await cacheService.updateCacheByFilter(
+    const cacheUpdateResult = await cacheService.updateCachesByFilter(
       { userId, contentId },
       { passed: true }
     );
