@@ -10,7 +10,6 @@ const contentSchema = mongoose.Schema(
       // tmdbId
       type: Number,
       required: true,
-      unique: true,
       index: true,
     },
     title: {

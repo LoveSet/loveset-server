@@ -46,8 +46,8 @@ const sendEmail = async (senderName = "LoveSet Inc.", to, subject, html) => {
 const sendWelcomeEmail = async (to) => {
   const subject = "Welcome to LoveSet!";
   const html = welcome();
-  // const res = await sendEmail("LoveSet", to, subject, html);
-  // return res;
+  const res = await sendEmail("LoveSet", to, subject, html);
+  return res;
 };
 
 const sendswipesAwardEmail = async (to) => {

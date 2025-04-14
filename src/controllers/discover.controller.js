@@ -16,6 +16,7 @@ const {
 const tmdb = require("../utils/tmdb");
 const { movieGenres, tvShowGenres } = require("../utils/tmdbGenres");
 const { tmdbQueue } = require("../background/tmdb/tmdb.queue");
+const { jsonrepair } = require("jsonrepair");
 
 // onboarding ==> get new feed
 // 4 items left ===> get new feed
@@ -94,8 +95,7 @@ FOCUS:
 - Always prefer **quality, diversity, and freshness** over convenience.
 - Slightly favor content that is similar in theme, genre, or tone to what the user has previously liked — but do not overly rely on this.
 - Include 1 popular, trending, or recent titles if they are a good fit — but keep the majority of results unique, varied, or lesser-known.
-- Avoid showing any content the user has already cached, liked or passed.
-- Rarely reuse cached/liked/passed content if list is hard to fill — for nostalgia or hidden gems, never overdo it.
+- Absolutely avoid showing any content the user has already cached, liked or passed as seen in user profile.
 - Ensure results span **different content types** (movies, TV shows, documentaries, animation, anime, short films) based on the user's preferences.
 - If the user's profile is too narrow, use the **closest available match** to maintain variety and engagement.
 - Pull content from **reliable and varied sources**. Do not simply grab the first result found.
@@ -131,7 +131,8 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
       .replace(/```/, "")
       .trim();
 
-    let parsedData = JSON.parse(data);
+    const repairedJson = jsonrepair(data);
+    let parsedData = JSON.parse(repairedJson);
 
     // Process each content item
     const contentPromises = parsedData.map(async (item) => {
