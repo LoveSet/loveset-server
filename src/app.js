@@ -115,10 +115,10 @@ app.use("/bull-board", serverAdapter.getRouter());
 /*  ========================================================= */
 
 /*  ======================= CRON JOBS ======================= */
-// if (config.env === "production") {
-subscriptionJob.updateExpiredSubscriptions();
-swipeJob.refreshSwipes();
-// }
+if (config.env === "production") {
+  subscriptionJob.updateExpiredSubscriptions();
+  swipeJob.refreshSwipes();
+}
 /*  ========================================================= */
 
 app.use((req, res, next) => {

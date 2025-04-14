@@ -4,6 +4,7 @@ const moment = require("moment");
 const { userService, emailService } = require("../services");
 const { Paddle, Environment, EventName } = require("@paddle/paddle-node-sdk");
 const config = require("../config/config");
+const logger = require("../config/logger");
 
 let paddle;
 
