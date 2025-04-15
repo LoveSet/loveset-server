@@ -121,7 +121,7 @@ Return a valid JavaScript array of 6 content objects with unique titles:
 - duration (e.g. "148 min" or "12 seasons")
 - cast (3 well-known names)
 
-Do not include anything else but the array. Avoid repetition. Keep it diverse and satisfying.
+Do not include anything else but the array. Avoid repetition. Avoid including anything already in the user's profile. Keep it diverse and satisfying.
 `;
 
     logger.info(input);
