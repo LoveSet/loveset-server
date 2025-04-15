@@ -46,7 +46,8 @@ const tmdbWorker = new Worker(
         if (content?.trailerUrl?.includes("search_query")) {
           const trailerUrl = await getYouTubeTrailerUrl(
             content?.title,
-            content?.year
+            content?.year,
+            content?.cast
           );
           updateData.trailerUrl = trailerUrl;
         }

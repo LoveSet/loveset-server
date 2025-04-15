@@ -147,7 +147,11 @@ Do not include anything else but the array. Avoid repetition. Keep it diverse an
       // If content already exists, use it, otherwise create new content
       if (!existingContent) {
         // Get trailer URL from YouTube
-        const trailerUrl = await getYouTubeSearchUrl(item.title, item.year);
+        const trailerUrl = await getYouTubeSearchUrl(
+          item?.title,
+          item?.year,
+          item?.cast
+        );
 
         // Determine if it's a movie or TV show based on duration
         let isMovie = !item.duration.includes("season");
@@ -418,7 +422,8 @@ const getYouTubeUrl = catchAsync(async (req, res) => {
     // Use the title and year from the content to fetch the YouTube trailer URL
     const trailerUrl = await getYouTubeTrailerUrl(
       content?.title,
-      content?.year
+      content?.year,
+      content?.cast
     );
 
     if (!trailerUrl) {

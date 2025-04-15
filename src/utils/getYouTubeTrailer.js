@@ -1,13 +1,13 @@
 const axios = require("axios");
 
-function getYouTubeSearchUrl(title, year) {
-  const query = `${title} (${year}) trailer`;
+function getYouTubeSearchUrl(title, year, cast) {
+  const query = `${title} (${year}) trailer - ${cast?.join(", ")}`;
   const encodedQuery = encodeURIComponent(query);
   return `https://www.youtube.com/results?search_query=${encodedQuery}`;
 }
 
-async function getYouTubeTrailerUrl(title, year) {
-  const searchYtUrl = getYouTubeSearchUrl(title, year);
+async function getYouTubeTrailerUrl(title, year, cast) {
+  const searchYtUrl = getYouTubeSearchUrl(title, year, cast);
   try {
     const response = await axios.get(`https://r.jina.ai/${searchYtUrl}`);
 
@@ -19,9 +19,9 @@ async function getYouTubeTrailerUrl(title, year) {
       return `https://www.youtube.com/watch?v=${matches[1]}`;
     }
     // return null; // Return null if no valid YouTube URL is found
-    return getYouTubeSearchUrl(title, year);
+    return getYouTubeSearchUrl(title, year, cast);
   } catch (error) {
-    return getYouTubeSearchUrl(title, year);
+    return getYouTubeSearchUrl(title, year, cast);
     // throw new Error("Failed to fetch YouTube trailer URL");
   }
 }
