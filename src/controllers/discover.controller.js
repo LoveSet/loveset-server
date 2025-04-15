@@ -96,6 +96,7 @@ FOCUS:
 - Slightly favor content that is similar in theme, genre, or tone to what the user has previously liked — but do not overly rely on this.
 - Include 1 popular, trending, or recent titles if they are a good fit — but keep the majority of results unique, varied, or lesser-known.
 - Do not show any content the user has already cached, liked or passed as seen in user profile.
+- Cached content refers to items the user has already viewed, do not recommend these again.
 - Ensure results span **different content types** (movies, TV shows, documentaries, animation, anime, short films) based on the user's preferences.
 - If the user's profile is too narrow, use the **closest available match** to maintain variety and engagement.
 - Pull content from **reliable and varied sources**. Do not simply grab the first result found. Do not be lazy
