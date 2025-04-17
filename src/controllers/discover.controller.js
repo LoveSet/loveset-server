@@ -57,8 +57,8 @@ const getContent = catchAsync(async (req, res) => {
 
     const user = await userService.getByUserId(userId);
 
-    // Check if the user is not premium and has used 10 or more swipes
-    if (!user.premium && user.swipesUsed >= 10) {
+    // Check if the user is not premium and has used 20 or more swipes
+    if (!user.premium && user.swipesUsed >= 20) {
       return Responses.handleError(
         403,
         "You have reached your daily swipe limit. Upgrade to premium for unlimited swipes.",
