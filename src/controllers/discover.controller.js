@@ -137,9 +137,15 @@ Do not include anything else but the array. Avoid repetition. Avoid including an
     const repairedJson = jsonrepair(data);
     let parsedData = JSON.parse(repairedJson);
 
-    // Process each content item
+    // Process each content items
     const contentPromises = parsedData.map(async (item) => {
-      // Check if content already exists in database
+      // Check if `title (year)` already exists in `users.contentCached`
+      const cachedTitle = `${item.title} (${item.year})`;
+      if (user.contentCached.includes(cachedTitle)) {
+        return null; // Skip processing if the content is already cached
+      }
+
+      // Check if content already exists in the database
       let existingContent = await contentService.getContentByFilter({
         title: item.title,
         year: item.year,
@@ -268,12 +274,12 @@ Do not include anything else but the array. Avoid repetition. Avoid including an
       }
 
       if (existingContent) {
-        // add content to contentCached in user model
+        // Add content to contentCached in user model
         await userService.updateUserByFilter(
           { _id: userId },
           {
             $addToSet: {
-              contentCached: `${existingContent.title} (${existingContent.year})`,
+              contentCached: cachedTitle,
             },
           }
         );
