@@ -39,3 +39,10 @@
 - limits [done]
   - rate_limits [done]
   - not_premium_and_out_of_swipes [todo]
+
+Using OpenAI's deep research or Perplexity's deep research would make for a much better solution:
+https://docs.perplexity.ai/models/models/sonar-deep-research
+as seen here:
+https://openai.com/index/browsecomp/
+
+google reviews + imdb ratings []
