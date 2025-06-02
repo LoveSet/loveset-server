@@ -1,48 +1,127 @@
-- System Prompt: Your goal is to keep this user engaged, give content that will more than likely be liked by this person especially taking their likes and dislikes into consideration.
-- System Prompt: While you can go for popular ones, you should also be on the lookout for obscure shows that may fit this user's interest. [done]
-- System Prompt: Note how many times a user has liked something. [update]
-- System Prompt: if there's a chance of repition, go to a liked movie, and look for something like that in that space, branch as much as possible [done]
-- if not a valid js array of movies, try again. [done]
-- so constantly filter items that have already been interacted with. [done]
-- If the query is too narrow, focus on specific preferences. [done]
-- Never be strict with preferences. [done]
-- Keep things in a loop where necessary. [done]
-- Have a sense of what the user's taste is too [done]
-- 📌fetch onboarding with the 3rd question [done]
+# LoveSet Server
 
-- google += referral [done]
-- onboarding [done]
-- Get User [done]
-- swiping:
-  - models: watchlist [done]
-  - getting data [done] + account for errors --> if data is incomplete, remove item, try...catch tmdb [done] + getCache [done]
-  - action (like+watchlist,pass) [done]
-- detail [done]
-  - streaming availability [done]
-- watchlist: [done]
-  - list [done]
-  - delete from watchlist [done]
-- billing [done]:
-  - billing\* [done]
-  - webhook\* [done]
-  - unsubscribe\* [done]
-    - create paddle product, pricings, webhook(variable) & email notifications. [done]
-    - create redis [done]
-    - email_notifications [done]
-- cron [done]:
-  - subscription\* [done]
-  - reset swipes [done]
-- emails [done]
-  - welcome\* [done]
-  - referral\* [done]
-  - expired\* [done]
-- limits [done]
-  - rate_limits [done]
-  - not_premium_and_out_of_swipes [todo]
+LoveSet Server is the backend API for the LoveSet app, a recommendation engine for movies, TV shows, anime, and more. It provides user authentication, personalized recommendations, billing, watchlist management, and more.
 
-Using OpenAI's deep research or Perplexity's deep research would make for a much better solution:
-https://docs.perplexity.ai/models/models/sonar-deep-research
-as seen here:
-https://openai.com/index/browsecomp/
+## Features
 
-google reviews + imdb ratings []
+- User authentication (Google OAuth, JWT)
+- Personalized content recommendations
+- Swiping mechanism (like/pass)
+- Watchlist management
+- Billing and subscription management (Paddle integration)
+- Email notifications (welcome, referral, subscription expired)
+- Rate limiting and security middleware
+- Admin dashboard for background jobs (Bull Board)
+- Cron jobs for subscription and swipe resets
+
+## Tech Stack
+
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- Redis (BullMQ)
+- Paddle (billing)
+- OpenAI API (recommendations)
+- Mailjet (emails)
+- Docker (optional for deployment)
+
+## Prerequisites
+
+- Node.js (v16+ recommended)
+- MongoDB instance
+- Redis instance
+- Paddle account (for billing)
+- Mailjet account (for emails)
+- OpenAI API key
+
+## Getting Started
+
+### 1. Clone the repository
+
+```sh
+git clone https://github.com/yourusername/loveset-server.git
+cd loveset-server
+```
+
+### 2. Install dependencies
+
+```sh
+npm install
+```
+
+### 3. Configure environment variables
+
+Copy `.env.example` to `.env` and fill in the required values:
+
+```sh
+cp .env.example .env
+```
+
+Edit `.env` with your credentials (MongoDB, Redis, Paddle, Mailjet, OpenAI, etc).
+
+### 4. Run the development server
+
+```sh
+npm start
+```
+
+The server will start on the port specified in your `.env` (default: 9000).
+
+### 5. API Endpoints
+
+All endpoints are prefixed with `/v1`.  
+See [src/routes/v1](src/routes/v1/index.js) for available routes:
+
+- `/v1/auth` - Authentication
+- `/v1/user` - User profile and onboarding
+- `/v1/discover` - Content recommendations and swiping
+- `/v1/content` - Content details and streaming availability
+- `/v1/watchlist` - Watchlist management
+- `/v1/billing` - Billing and subscriptions
+
+### 6. Background Jobs
+
+BullMQ is used for background processing (TMDB, webhooks).  
+Access the Bull Board dashboard at:  
+`http://localhost:9000/bull-board` (credentials in `.env`)
+
+### 7. Testing
+
+> No tests are currently specified.  
+> You can add tests and run them with:
+
+```sh
+npm test
+```
+
+## Project Structure
+
+```
+src/
+  app.js
+  index.js
+  config/
+  controllers/
+  models/
+  routes/
+  services/
+  utils/
+  ...
+files/           # Uploaded files (e.g., images)
+logs/            # Log files
+```
+
+## Deployment
+
+- Set `NODE_ENV=production` in your environment.
+- Make sure MongoDB and Redis are accessible.
+- Use a process manager like PM2 or Docker for production.
+
+## License
+
+[ISC](LICENSE)
+
+---
+
+**LoveSet Server**  
+Find your perfect movie match!
