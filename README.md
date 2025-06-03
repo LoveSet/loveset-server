@@ -39,7 +39,7 @@ LoveSet Server is the backend API for the LoveSet app, a recommendation engine f
 ### 1. Clone the repository
 
 ```sh
-git clone https://github.com/yourusername/loveset-server.git
+git clone https://github.com/LoveSet/loveset-server.git
 cd loveset-server
 ```
 
