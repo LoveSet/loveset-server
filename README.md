@@ -67,6 +67,32 @@ npm start
 
 The server will start on the port specified in your `.env` (default: 9000).
 
+### 4b. Run Background Workers
+
+The project uses BullMQ workers for background processing. You need to run these workers in separate terminal windows:
+
+#### TMDB Worker
+
+```sh
+# Development
+NODE_ENV=development node src/background/tmdb/tmdb.worker.js
+
+# Production
+NODE_ENV=production node src/background/tmdb/tmdb.worker.js --name tmdb-worker
+```
+
+#### Webhook Worker
+
+```sh
+# Development
+NODE_ENV=development node src/background/webhook/webhook.worker.js
+
+# Production
+NODE_ENV=production node src/background/webhook/webhook.worker.js --name webhook-worker
+```
+
+> **Note:** Each worker should be run in its own terminal session or managed by a process manager (e.g., PM2, Docker Compose).
+
 ### 5. API Endpoints
 
 All endpoints are prefixed with `/v1`.  
